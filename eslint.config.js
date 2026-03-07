@@ -20,4 +20,11 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  // barrel 파일(index에서 export * 사용)은 only-export-components 검사 제외
+  {
+    files: ['**/index.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])
