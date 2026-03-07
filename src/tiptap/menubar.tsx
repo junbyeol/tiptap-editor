@@ -1,11 +1,11 @@
 import { Toolbar, ToolbarGroup, ToolbarSeparator } from '../components/tiptap-ui-primitive/toolbar'
 import { Button } from '../components/tiptap-ui-primitive/button'
 import { RiItalic, RiBold } from '@remixicon/react'
-import { Spacer } from '../components/tiptap-ui-primitive/spacer'
 import { UndoRedoButton } from '../components/tiptap-ui/undo-redo-button'
 import type { Editor } from '@tiptap/react'
+import { ColorTextPopover } from '@/components/custom/color-text-popover'
 
-export default function MyComponent({ editor }: { editor: Editor }) {
+export default function menubar({ editor }: { editor: Editor }) {
   return (
     <Toolbar>
       <ToolbarGroup>
@@ -17,6 +17,7 @@ export default function MyComponent({ editor }: { editor: Editor }) {
         <Button data-style="ghost" tooltip="Italic" onClick={() => editor.chain().focus().toggleItalic().run()}>
           <RiItalic className="tiptap-button-icon" />
         </Button>
+        <ColorTextPopover editor={editor} />
       </ToolbarGroup>
 
       <ToolbarSeparator />
@@ -25,11 +26,6 @@ export default function MyComponent({ editor }: { editor: Editor }) {
         <Button data-style="ghost" tooltip="Format" onClick={() => editor.chain().focus().toggleFormat('paragraph').run()}>Format</Button>
       </ToolbarGroup> */}
 
-      <Spacer />
-
-      <ToolbarGroup>
-        <Button data-style="primary">Save</Button>
-      </ToolbarGroup>
     </Toolbar>
   )
 }

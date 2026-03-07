@@ -2,8 +2,9 @@ import { useEditor, EditorContent, EditorContext } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import MenuBar from './menubar'
 import { useMemo } from 'react'
+import { TextStyle, Color, BackgroundColor } from '@tiptap/extension-text-style'
 
-const extensions = [StarterKit]
+const extensions = [StarterKit, TextStyle, Color, BackgroundColor]
 
 export default () => {
   const editor = useEditor({
