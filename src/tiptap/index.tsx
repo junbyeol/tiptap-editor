@@ -1,10 +1,27 @@
-import { useEditor, EditorContent, EditorContext } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import MenuBar from './menubar'
-import { useMemo } from 'react'
-import { TextStyle, Color, BackgroundColor } from '@tiptap/extension-text-style'
+import { useEditor, EditorContent, EditorContext } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import MenuBar from "./menubar";
+import { useMemo } from "react";
+import {
+  TextStyle,
+  Color,
+  BackgroundColor,
+} from "@tiptap/extension-text-style";
+import TextAlign from "@tiptap/extension-text-align";
+import { TableKit } from "@tiptap/extension-table";
+import { Gapcursor } from '@tiptap/extensions'
 
-const extensions = [StarterKit, TextStyle, Color, BackgroundColor]
+const extensions = [
+  StarterKit,
+  TextStyle,
+  Color,
+  BackgroundColor,
+  TextAlign.configure({ types: ["heading", "paragraph"] }),
+  Gapcursor,
+  TableKit.configure({
+    table: { resizable: true },
+  }),
+];
 
 export default () => {
   const editor = useEditor({
@@ -39,7 +56,7 @@ export default () => {
   — Mom
 </blockquote>
 `,
-  })
+  });
 
   const providerValue = useMemo(() => ({ editor }), [editor]);
 
@@ -47,12 +64,12 @@ export default () => {
     <TiptapWrapper>
       <EditorContext.Provider value={providerValue}>
         <MenuBar editor={editor} />
-      <EditorContent editor={editor} />
+        <EditorContent editor={editor} />
       </EditorContext.Provider>
     </TiptapWrapper>
-  )
-}
+  );
+};
 
-const TiptapWrapper = ({ children }: { children: React.ReactNode }) => (<div className="tiptap-wrapper">
-  {children}
-</div>);
+const TiptapWrapper = ({ children }: { children: React.ReactNode }) => (
+  <div className="tiptap-wrapper">{children}</div>
+);
