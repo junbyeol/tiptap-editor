@@ -4,20 +4,20 @@ import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
 import { RiPaintFill } from "@remixicon/react";
 import { colors } from "./variables";
 import {
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-  } from "@/components/tiptap-ui-primitive/popover";
-  import {
-    Button,
-    type ButtonProps,
-  } from "@/components/tiptap-ui-primitive/button";
-  import {
-    Card,
-    CardBody,
-    CardItemGroup,
-    CardGroupLabel,
-  } from "@/components/tiptap-ui-primitive/card";
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/tiptap-ui-primitive/popover";
+import {
+  Button,
+  type ButtonProps,
+} from "@/components/tiptap-ui-primitive/button";
+import {
+  Card,
+  CardBody,
+  CardItemGroup,
+  CardGroupLabel,
+} from "@/components/tiptap-ui-primitive/card";
 
 interface UseTableCellBackgroundColorPopoverConfig {
   editor?: Editor | null;
@@ -25,7 +25,8 @@ interface UseTableCellBackgroundColorPopoverConfig {
   onExecuted?: () => void;
 }
 
-interface TableCellBackgroundColorPopoverProps extends ButtonProps, UseTableCellBackgroundColorPopoverConfig {}
+interface TableCellBackgroundColorPopoverProps
+  extends ButtonProps, UseTableCellBackgroundColorPopoverConfig {}
 
 interface ColoredButtonIconProps {
   backgroundColorHex: string | null;
@@ -42,7 +43,9 @@ const ColoredButtonIcon = ({
   const borderColor = borderColorHex ?? "#e5e7eb";
 
   return (
-    <span className={className} style={{
+    <span
+      className={className}
+      style={{
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
@@ -53,37 +56,39 @@ const ColoredButtonIcon = ({
         backgroundColor,
         fontSize: "0.75rem",
         fontWeight: 700,
-      }} aria-hidden />
+      }}
+      aria-hidden
+    />
   );
 };
 
 export const TableCellBackgroundColorPopover = forwardRef<
-HTMLButtonElement,
-TableCellBackgroundColorPopoverProps
+  HTMLButtonElement,
+  TableCellBackgroundColorPopoverProps
 >(({ editor: providedEditor, ...buttonProps }) => {
-    const { editor } = useTiptapEditor(providedEditor);
+  const { editor } = useTiptapEditor(providedEditor);
 
-    const handleApplyBackgroundColor = useCallback(
-        (hex: string) => {
-          if (!editor) return;
-          editor.chain().focus().setCellAttribute('backgroundColor', hex).run()
-        },
-        [editor]
-      );
+  const handleApplyBackgroundColor = useCallback(
+    (hex: string) => {
+      if (!editor) return;
+      editor.chain().focus().setCellAttribute("backgroundColor", hex).run();
+    },
+    [editor],
+  );
 
-    return (
-        <Popover>
-            <PopoverTrigger asChild>
-                <Button data-style="ghost" tooltip="셀 배경색 변경" {...buttonProps}>
-                    <RiPaintFill className="tiptap-button-icon" />
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent align="start">
-            <Card>
-            <CardBody>
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button data-style="ghost" tooltip="셀 배경색 변경" {...buttonProps}>
+          <RiPaintFill className="tiptap-button-icon" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent align="start">
+        <Card>
+          <CardBody>
             <CardGroupLabel>Background Color</CardGroupLabel>
             <CardItemGroup orientation="horizontal">
-              {colors.slice(0,5).map((color, index) => (
+              {colors.slice(0, 5).map((color, index) => (
                 <Button
                   key={`${color.color}-${index}`}
                   data-style="ghost"
@@ -100,7 +105,7 @@ TableCellBackgroundColorPopoverProps
               ))}
             </CardItemGroup>
             <CardItemGroup orientation="horizontal">
-              {colors.slice(5,10).map((color, index) => (
+              {colors.slice(5, 10).map((color, index) => (
                 <Button
                   key={`${color.color}-${index}`}
                   data-style="ghost"
@@ -116,10 +121,9 @@ TableCellBackgroundColorPopoverProps
                 </Button>
               ))}
             </CardItemGroup>
-                </CardBody>
-                
-                </Card>
-            </PopoverContent>
-        </Popover>
-    );
+          </CardBody>
+        </Card>
+      </PopoverContent>
+    </Popover>
+  );
 });

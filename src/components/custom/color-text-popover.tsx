@@ -27,8 +27,7 @@ interface UseColorTextPopoverConfig {
 }
 
 interface ColorTextPopoverProps
-  extends ButtonProps,
-    UseColorTextPopoverConfig {}
+  extends ButtonProps, UseColorTextPopoverConfig {}
 
 const RECENT_MAX = 3;
 
@@ -97,7 +96,7 @@ const saveRecentPairs = (pairs: RecentPair[]) => {
   try {
     localStorage.setItem(
       COLOR_TEXT_POPOVER_RECENT_KEY,
-      JSON.stringify(pairs.slice(0, RECENT_MAX))
+      JSON.stringify(pairs.slice(0, RECENT_MAX)),
     );
   } catch {
     // ignore
@@ -129,19 +128,25 @@ export const ColorTextPopover = forwardRef<
   const currentTextColor = selectionAttrs?.color ?? null;
   const currentBackgroundColor = selectionAttrs?.backgroundColor ?? null;
 
-  const addRecent = useCallback((textColor: string | null, backgroundColor: string | null) => {
-    setRecentPairs((prev) => {
-      const next = [
-        { textColor, backgroundColor },
-        ...prev.filter(
-          (p) =>
-            !(p.textColor === textColor && p.backgroundColor === backgroundColor)
-        ),
-      ].slice(0, RECENT_MAX);
-      saveRecentPairs(next);
-      return next;
-    });
-  }, []);
+  const addRecent = useCallback(
+    (textColor: string | null, backgroundColor: string | null) => {
+      setRecentPairs((prev) => {
+        const next = [
+          { textColor, backgroundColor },
+          ...prev.filter(
+            (p) =>
+              !(
+                p.textColor === textColor &&
+                p.backgroundColor === backgroundColor
+              ),
+          ),
+        ].slice(0, RECENT_MAX);
+        saveRecentPairs(next);
+        return next;
+      });
+    },
+    [],
+  );
 
   const handleApplyTextColor = useCallback(
     (hex: string | null) => {
@@ -151,11 +156,10 @@ export const ColorTextPopover = forwardRef<
       } else {
         editor.chain().focus().setColor(hex).run();
       }
-      const bg =
-        editor.getAttributes("textStyle").backgroundColor ?? null;
+      const bg = editor.getAttributes("textStyle").backgroundColor ?? null;
       addRecent(hex, bg);
     },
-    [editor, addRecent]
+    [editor, addRecent],
   );
 
   const handleApplyBackgroundColor = useCallback(
@@ -169,7 +173,7 @@ export const ColorTextPopover = forwardRef<
       const text = editor.getAttributes("textStyle").color ?? null;
       addRecent(text, hex);
     },
-    [editor, addRecent]
+    [editor, addRecent],
   );
 
   const handleApplyRecent = useCallback(
@@ -187,7 +191,7 @@ export const ColorTextPopover = forwardRef<
       }
       addRecent(pair.textColor, pair.backgroundColor);
     },
-    [editor, addRecent]
+    [editor, addRecent],
   );
 
   return (
@@ -229,7 +233,7 @@ export const ColorTextPopover = forwardRef<
 
             <CardGroupLabel>Text Color</CardGroupLabel>
             <CardItemGroup orientation="horizontal">
-              {colors.slice(0,5).map((item, index) => {
+              {colors.slice(0, 5).map((item, index) => {
                 const isDefault = index === 0;
                 const hex = isDefault ? null : item.contrastColor;
                 const isActive =
@@ -281,7 +285,7 @@ export const ColorTextPopover = forwardRef<
 
             <CardGroupLabel>Highlight Color</CardGroupLabel>
             <CardItemGroup orientation="horizontal">
-              {colors.slice(0,5).map((item, index) => {
+              {colors.slice(0, 5).map((item, index) => {
                 const isDefault = index === 0;
                 const hex = isDefault ? null : item.color;
                 const isActive =
@@ -313,7 +317,7 @@ export const ColorTextPopover = forwardRef<
               })}
             </CardItemGroup>
             <CardItemGroup orientation="horizontal">
-              {colors.slice(5,10).map((item, index) => {
+              {colors.slice(5, 10).map((item, index) => {
                 const isDefault = index === 0;
                 const hex = isDefault ? null : item.color;
                 const isActive =

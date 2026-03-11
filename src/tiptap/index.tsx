@@ -9,7 +9,7 @@ import {
 } from "@tiptap/extension-text-style";
 import TextAlign from "@tiptap/extension-text-align";
 import { TableKit, TableCell } from "@tiptap/extension-table";
-import { Gapcursor } from '@tiptap/extensions'
+import { Gapcursor } from "@tiptap/extensions";
 
 const extensions = [
   StarterKit,
@@ -31,20 +31,20 @@ const extensions = [
           default: null,
           renderHTML: (attributes) => {
             if (!attributes.backgroundColor) {
-              return {}
+              return {};
             }
-  
+
             return {
               style: `background-color: ${attributes.backgroundColor}`,
-            }
+            };
           },
           parseHTML: (element) => {
-            return element.style.backgroundColor.replace(/['"]+/g, '')
+            return element.style.backgroundColor.replace(/['"]+/g, "");
           },
         },
-      }
+      };
     },
-  })
+  }),
 ];
 
 export default () => {
