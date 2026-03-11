@@ -8,7 +8,7 @@ import {
   BackgroundColor,
 } from "@tiptap/extension-text-style";
 import TextAlign from "@tiptap/extension-text-align";
-import { TableKit } from "@tiptap/extension-table";
+import { TableKit, TableCell } from "@tiptap/extension-table";
 import { Gapcursor } from '@tiptap/extensions'
 
 const extensions = [
@@ -21,6 +21,30 @@ const extensions = [
   TableKit.configure({
     table: { resizable: true },
   }),
+  // TableCell extension을 별도로 extend 해 준 이유
+  // https://github.com/ueberdosis/tiptap/issues/862
+  TableCell.extend({
+    addAttributes() {
+      return {
+        ...this.parent?.(),
+        backgroundColor: {
+          default: null,
+          renderHTML: (attributes) => {
+            if (!attributes.backgroundColor) {
+              return {}
+            }
+  
+            return {
+              style: `background-color: ${attributes.backgroundColor}`,
+            }
+          },
+          parseHTML: (element) => {
+            return element.style.backgroundColor.replace(/['"]+/g, '')
+          },
+        },
+      }
+    },
+  })
 ];
 
 export default () => {

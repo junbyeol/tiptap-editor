@@ -12,6 +12,7 @@ import { ListButton } from "@/components/tiptap-ui/list-button";
 import { MarkButton } from "@/components/tiptap-ui/mark-button";
 import { Button } from "@/components/tiptap-ui-primitive/button";
 import { RiTable2, RiInsertColumnRight, RiInsertRowBottom, RiDeleteColumn, RiDeleteRow, RiMergeCellsHorizontal,RiPaintFill } from "@remixicon/react";
+import { TableCellBackgroundColorPopover } from "@/components/custom/table-cell-background-color-popover";
 
 export default function menubar({ editor }: { editor: Editor }) {
   return (
@@ -25,8 +26,6 @@ export default function menubar({ editor }: { editor: Editor }) {
         <MarkButton type="strike" />
         <MarkButton type="code" />
         <MarkButton type="underline" />
-        <MarkButton type="superscript" />
-        <MarkButton type="subscript" />
         <ColorTextPopover editor={editor} />
         <HeadingDropdownMenu
           editor={editor}
@@ -45,27 +44,25 @@ export default function menubar({ editor }: { editor: Editor }) {
       </ToolbarGroup>
 
       <ToolbarGroup>
-        <Button data-style="ghost" tooltip="Table" onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run()}>
+        <Button data-style="ghost" tooltip="표 삽입" onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run()}>
           <RiTable2 className="tiptap-button-icon" />
         </Button>
-        <Button data-style="ghost" tooltip="Table" onClick={() => editor.chain().focus().addColumnAfter().run()}>
+        <Button data-style="ghost" tooltip="열 추가" onClick={() => editor.chain().focus().addColumnAfter().run()}>
           <RiInsertColumnRight className="tiptap-button-icon" />
         </Button>
-        <Button data-style="ghost" tooltip="Table" onClick={() => editor.chain().focus().deleteColumn().run()}>
+        <Button data-style="ghost" tooltip="열 제거" onClick={() => editor.chain().focus().deleteColumn().run()}>
           <RiDeleteColumn className="tiptap-button-icon" />
         </Button>
-        <Button data-style="ghost" tooltip="Table" onClick={() => editor.chain().focus().addRowAfter().run()}>
+        <Button data-style="ghost" tooltip="행 추가" onClick={() => editor.chain().focus().addRowAfter().run()}>
           <RiInsertRowBottom className="tiptap-button-icon" />
         </Button>
-        <Button data-style="ghost" tooltip="Table" onClick={() => editor.chain().focus().deleteRow().run()}>
+        <Button data-style="ghost" tooltip="행 제거" onClick={() => editor.chain().focus().deleteRow().run()}>
           <RiDeleteRow className="tiptap-button-icon" />
         </Button>
-        <Button data-style="ghost" tooltip="Table" onClick={() => editor.chain().focus().mergeOrSplit().run()}>
+        <Button data-style="ghost" tooltip="셀 병합" onClick={() => editor.chain().focus().mergeOrSplit().run()}>
           <RiMergeCellsHorizontal className="tiptap-button-icon" />
         </Button>
-        <Button data-style="ghost" tooltip="Table" onClick={() => editor.chain().focus().setCellAttribute('backgroundColor', '#000').run()}>
-          <RiPaintFill className="tiptap-button-icon" />
-        </Button>
+        <TableCellBackgroundColorPopover editor={editor} />
         
 
       </ToolbarGroup>
