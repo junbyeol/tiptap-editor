@@ -25,6 +25,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:lib": "vite build --config vite.lib.config.ts",
+    "prepublishOnly": "yarn build:lib",
     "lint": "eslint .",
     "preview": "vite preview",
     "prettier": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md,scss}\"",
