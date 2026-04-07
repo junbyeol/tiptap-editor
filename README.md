@@ -34,6 +34,8 @@ export default function App() {
 
 | Prop                      | 타입                                      | 설명                                                                    |
 | ------------------------- | ----------------------------------------- | ----------------------------------------------------------------------- |
+| `defaultValue`            | `string`                                  | 초기 HTML 콘텐츠. 마운트 시에만 적용됨                                  |
+| `onChange`                | `(html: string) => void`                  | 콘텐츠 변경 시 호출. HTML 문자열을 반환                                 |
 | `uploadFile`              | `(file: File) => Promise<string>`         | 파일을 업로드하고 URL을 반환. 미제공 시 base64로 브라우저 메모리에 저장 |
 | `onFileInsert`            | `(file: File) => void`                    | 파일이 에디터에 삽입될 때 호출                                          |
 | `onFileError`             | `(error: Error) => void`                  | 파일 처리 오류 시 호출                                                  |

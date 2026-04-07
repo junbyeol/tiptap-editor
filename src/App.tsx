@@ -2,6 +2,31 @@ import "./App.css";
 import Tiptap from "./tiptap/index";
 import { toast, ToastContainer, Bounce } from "react-toastify";
 
+const DEMO_INITIAL_CONTENT = `
+<h2>Hi there,</h2>
+<p>
+  this is a <em>basic</em> example of <strong>Tiptap</strong>. Sure, there are all kind of basic text styles you'd probably expect from a text editor. But wait until you see the lists:
+</p>
+<ul>
+  <li>That's a bullet list with one …</li>
+  <li>… or two list items.</li>
+</ul>
+<p>
+  Isn't that great? And all of that is editable. But wait, there's more. Let's try a code block:
+</p>
+<pre><code class="language-css">body {
+  display: none;
+}</code></pre>
+<p>
+  I know, I know, this is impressive. It's only the tip of the iceberg though. Give it a try and click a little bit around. Don't forget to check the other examples too.
+</p>
+<blockquote>
+  Wow, that's amazing. Good work, boy! 👏
+  <br />
+  — Mom
+</blockquote>
+`;
+
 function App() {
   return (
     <>
@@ -10,6 +35,8 @@ function App() {
 
       {/* 에디터는 .demo-ui 밖에 위치 → demo-ui 스타일의 영향을 받지 않음 */}
       <Tiptap
+        defaultValue={DEMO_INITIAL_CONTENT}
+        onChange={(html) => console.log("[demo] onChange:", html)}
         // uploadFile={uploadFile}
         onFileInsert={(file) =>
           toast.success(`${file.name} 업로드 완료`, {

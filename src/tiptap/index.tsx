@@ -21,6 +21,15 @@ import { DefaultFileAttachmentComponent } from "./extensions/default-file-attach
 
 export interface TiptapProps {
   /**
+   * 에디터의 초기 HTML 콘텐츠.
+   * 마운트 시에만 적용되며, 이후 변경은 에디터 내부 상태로 관리됨.
+   */
+  defaultValue?: string;
+  /**
+   * 에디터 콘텐츠가 변경될 때마다 호출되는 콜백. HTML 문자열을 반환.
+   */
+  onChange?: (html: string) => void;
+  /**
    * 제공 시: 파일을 CDN에 업로드하고 URL을 반환.
    * 미제공 시: FileReader로 base64 변환 후 브라우저 메모리에 임시 저장.
    */
@@ -59,6 +68,8 @@ const IMAGE_MIME_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp"];
 const isImageFile = (file: File) => file.type.startsWith("image/");
 
 const TiptapEditor = ({
+  defaultValue = "",
+  onChange,
   uploadFile,
   onFileInsert,
   onFileError,
@@ -67,10 +78,15 @@ const TiptapEditor = ({
 }: TiptapProps) => {
   // useEditor는 초기 마운트 시에만 extensions를 처리하므로
   // prop 콜백이 변경돼도 stale 클로저가 되지 않도록 ref로 관리
+  const onChangeRef = useRef(onChange);
   const uploadFileRef = useRef(uploadFile);
   const onFileInsertRef = useRef(onFileInsert);
   const onFileErrorRef = useRef(onFileError);
   const fileAttachmentComponentRef = useRef(FileAttachmentComponent);
+
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
 
   useEffect(() => {
     uploadFileRef.current = uploadFile;
@@ -196,36 +212,10 @@ const TiptapEditor = ({
         },
       }),
     ],
-    content: `
-<h2>
-  Hi there,
-</h2>
-<p>
-  this is a <em>basic</em> example of <strong>Tiptap</strong>. Sure, there are all kind of basic text styles you'd probably expect from a text editor. But wait until you see the lists:
-</p>
-<ul>
-  <li>
-    That's a bullet list with one …
-  </li>
-  <li>
-    … or two list items.
-  </li>
-</ul>
-<p>
-  Isn't that great? And all of that is editable. B  ut wait, there's more. Let's try a code block:
-</p>
-<pre><code class="language-css">body {
-  display: none;
-}</code></pre>
-<p>
-  I know, I know, this is impressive. It's only the tip of the iceberg though. Give it a try and click a little bit around. Don't forget to check the other examples too.
-</p>
-<blockquote>
-  Wow, that's amazing. Good work, boy! 👏
-  <br />
-  — Mom
-</blockquote>
-`,
+    content: defaultValue,
+    onUpdate: ({ editor: currentEditor }) => {
+      onChangeRef.current?.(currentEditor.getHTML());
+    },
   });
 
   const providerValue = useMemo(() => ({ editor }), [editor]);
