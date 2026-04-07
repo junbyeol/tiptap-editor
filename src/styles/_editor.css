@@ -11,6 +11,64 @@
   max-height: var(--tiptap-max-height, none);
   overflow-y: auto;
 
+  /* ── Image resize ─────────────────────────────────────────────────────── */
+
+  /* ResizableNodeView가 생성하는 컨테이너: 인라인 블록으로 유지하되 핸들 위치의 기준점 */
+  [data-resize-state] {
+    position: relative;
+    display: inline-block;
+    line-height: 0;
+  }
+
+  /* 리사이즈 중일 때 이미지에 선택 아웃라인 표시 */
+  [data-resize-state="resizing"] img {
+    outline: 2px solid var(--purple);
+    outline-offset: 1px;
+  }
+
+  /* 각 resize handle 공통 스타일 */
+  [data-resize-handle] {
+    position: absolute;
+    z-index: 10;
+    box-sizing: border-box;
+
+    /* 8×8 흰색 원형 핸들, 보라색 테두리 */
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    border: 1.5px solid var(--purple);
+    border-radius: 50%;
+
+    cursor: grab;
+  }
+
+  /* 대각선 핸들 (Image.configure의 directions에 코너를 추가할 경우를 대비) */
+  [data-resize-handle][data-direction="top-left"] {
+    top: 0;
+    left: 0;
+    cursor: nwse-resize;
+  }
+
+  [data-resize-handle][data-direction="top-right"] {
+    top: 0;
+    right: 0;
+    cursor: nesw-resize;
+  }
+
+  [data-resize-handle][data-direction="bottom-left"] {
+    bottom: 0;
+    left: 0;
+    cursor: nesw-resize;
+  }
+
+  [data-resize-handle][data-direction="bottom-right"] {
+    bottom: 0;
+    right: 0;
+    cursor: nwse-resize;
+  }
+
+  /* ──────────────────────────────────────────────────────────────────────── */
+
   table {
     .selectedCell:after {
       background: var(--gray-2);

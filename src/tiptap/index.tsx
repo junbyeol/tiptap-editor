@@ -164,7 +164,15 @@ const TiptapEditor = ({
       BackgroundColor,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Gapcursor,
-      Image,
+      Image.configure({
+        resize: {
+          enabled: true,
+          directions: ["top-left", "top-right", "bottom-left", "bottom-right"], // can be any direction or diagonal combination
+          minWidth: 50,
+          minHeight: 50,
+          alwaysPreserveAspectRatio: true,
+        },
+      }),
       createFileAttachmentExtension(fileAttachmentComponentRef),
       TableKit.configure({
         table: { resizable: true },
