@@ -1,73 +1,80 @@
-# React + TypeScript + Vite
+# @junbyeol/tiptap-editor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React용 Tiptap 리치 텍스트 에디터 컴포넌트입니다. 텍스트 서식, 표, 파일 첨부 등의 기능을 포함합니다.
 
-Currently, two official plugins are available:
+~**[데모 보기](https://your-demo-url.com)**~
+준비중
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 기능
 
-## React Compiler
+- 텍스트 서식 (Bold, Italic, Strike, Underline, Code, 색상)
+- 제목 (H1~H4), 목록, 텍스트 정렬
+- 표 삽입 및 편집 (셀 병합, 배경색)
+- 이미지 / 파일 드래그&드롭 및 붙여넣기
+- 다크모드 지원
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## 설치
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install @junbyeol/tiptap-editor
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 사용법
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```tsx
+import { TiptapEditor } from "@junbyeol/tiptap-editor";
+import "@junbyeol/tiptap-editor/style.css";
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+export default function App() {
+  return <TiptapEditor />;
+}
+```
+
+### Props
+
+| Prop                      | 타입                                      | 설명                                                                    |
+| ------------------------- | ----------------------------------------- | ----------------------------------------------------------------------- |
+| `uploadFile`              | `(file: File) => Promise<string>`         | 파일을 업로드하고 URL을 반환. 미제공 시 base64로 브라우저 메모리에 저장 |
+| `onFileInsert`            | `(file: File) => void`                    | 파일이 에디터에 삽입될 때 호출                                          |
+| `onFileError`             | `(error: Error) => void`                  | 파일 처리 오류 시 호출                                                  |
+| `allowNonImageFile`       | `boolean`                                 | 이미지 외 파일(PDF 등) 허용 여부 (기본값: `false`)                      |
+| `FileAttachmentComponent` | `ComponentType<FileAttachmentAttributes>` | 비이미지 파일을 렌더링할 컴포넌트                                       |
+
+### 파일 업로드 예시
+
+```tsx
+import { TiptapEditor } from "@junbyeol/tiptap-editor";
+import "@junbyeol/tiptap-editor/style.css";
+
+const uploadFile = async (file: File): Promise<string> => {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = await fetch("/api/upload", { method: "POST", body: formData });
+  const { url } = await res.json();
+  return url;
+};
+
+export default function App() {
+  return (
+    <TiptapEditor
+      uploadFile={uploadFile}
+      onFileInsert={(file) => console.log("삽입됨:", file.name)}
+      onFileError={(error) => console.error(error)}
+      allowNonImageFile
+    />
+  );
+}
+```
+
+## 로컬 개발
+
+```bash
+# 의존성 설치
+yarn
+
+# 데모 앱 실행
+yarn dev
+
+# 라이브러리 빌드
+yarn build:lib
 ```
