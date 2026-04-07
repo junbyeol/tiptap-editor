@@ -30,6 +30,14 @@ export interface TiptapProps {
    */
   onChange?: (html: string) => void;
   /**
+   * 에디터 콘텐츠 영역의 최소 높이. (기본값: 200px)
+   */
+  minHeight?: string;
+  /**
+   * 에디터 콘텐츠 영역의 최대 높이. 초과 시 내부 스크롤. (기본값: 없음)
+   */
+  maxHeight?: string;
+  /**
    * 제공 시: 파일을 CDN에 업로드하고 URL을 반환.
    * 미제공 시: FileReader로 base64 변환 후 브라우저 메모리에 임시 저장.
    */
@@ -70,6 +78,8 @@ const isImageFile = (file: File) => file.type.startsWith("image/");
 const TiptapEditor = ({
   defaultValue = "",
   onChange,
+  minHeight,
+  maxHeight,
   uploadFile,
   onFileInsert,
   onFileError,
@@ -221,7 +231,7 @@ const TiptapEditor = ({
   const providerValue = useMemo(() => ({ editor }), [editor]);
 
   return (
-    <TiptapWrapper>
+    <TiptapWrapper minHeight={minHeight} maxHeight={maxHeight}>
       <EditorContext.Provider value={providerValue}>
         <MenuBar editor={editor} />
         <EditorContent editor={editor} />
@@ -230,8 +240,28 @@ const TiptapEditor = ({
   );
 };
 
-const TiptapWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="tiptap-wrapper">{children}</div>
+interface TiptapWrapperProps {
+  children: React.ReactNode;
+  minHeight?: string;
+  maxHeight?: string;
+}
+
+const TiptapWrapper = ({
+  children,
+  minHeight,
+  maxHeight,
+}: TiptapWrapperProps) => (
+  <div
+    className="tiptap-wrapper"
+    style={
+      {
+        "--tiptap-min-height": minHeight,
+        "--tiptap-max-height": maxHeight,
+      } as React.CSSProperties
+    }
+  >
+    {children}
+  </div>
 );
 
 export default TiptapEditor;

@@ -7,6 +7,10 @@
 }
 
 .tiptap {
+  min-height: var(--tiptap-min-height, 200px);
+  max-height: var(--tiptap-max-height, none);
+  overflow-y: auto;
+
   table {
     .selectedCell:after {
       background: var(--gray-2);
