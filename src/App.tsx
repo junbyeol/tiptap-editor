@@ -5,6 +5,10 @@ import { toast, ToastContainer, Bounce } from "react-toastify";
 function App() {
   return (
     <>
+      {/* 데모 전용 UI (헤더, 설명 등) — .demo-ui 안에서만 스타일 적용됨 */}
+      <div className="demo-ui">{/* TODO: 데모 헤더/설명 추가 */}</div>
+
+      {/* 에디터는 .demo-ui 밖에 위치 → demo-ui 스타일의 영향을 받지 않음 */}
       <Tiptap
         // uploadFile={uploadFile}
         onFileInsert={(file) =>
