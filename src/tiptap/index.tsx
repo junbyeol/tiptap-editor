@@ -19,7 +19,7 @@ import {
 } from "./extensions/file-attachment";
 import { DefaultFileAttachmentComponent } from "./extensions/default-file-attachment";
 
-interface TiptapProps {
+export interface TiptapProps {
   /**
    * 제공 시: 파일을 CDN에 업로드하고 URL을 반환.
    * 미제공 시: FileReader로 base64 변환 후 브라우저 메모리에 임시 저장.
@@ -58,7 +58,7 @@ const IMAGE_MIME_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp"];
 
 const isImageFile = (file: File) => file.type.startsWith("image/");
 
-export default ({
+const TiptapEditor = ({
   uploadFile,
   onFileInsert,
   onFileError,
@@ -243,3 +243,5 @@ export default ({
 const TiptapWrapper = ({ children }: { children: React.ReactNode }) => (
   <div className="tiptap-wrapper">{children}</div>
 );
+
+export default TiptapEditor;
