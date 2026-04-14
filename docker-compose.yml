@@ -1,6 +1,6 @@
 services:
-  tiptap-app: # resume-app → tiptap-app
-    image: ghcr.io/junbyeol/tiptap-app:latest # 이미지명 변경
+  tiptap-app:
+    image: ghcr.io/junbyeol/tiptap-app:latest
     container_name: tiptap-app
     restart: always
     networks:
