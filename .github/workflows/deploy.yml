@@ -7,6 +7,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository_owner }}/tiptap-app
+  DEPLOY_PATH: "~/first-garage-machine/infra"
 
 jobs:
   build-and-push:
@@ -45,7 +46,11 @@ jobs:
           key: ${{ secrets.GCP_SSH_KEY }}
           port: ${{ secrets.GCP_SSH_PORT }}
           script: |
-            cd ~/tiptap
+            # 에러 발생 시 즉시 중단 및 실패 처리
+            # https://github.com/marketplace/actions/ssh-remote-commands
+            set -e 
+
+            cd ${{ env.DEPLOY_PATH }}
 
             docker compose pull tiptap-app
             docker compose up -d tiptap-app
