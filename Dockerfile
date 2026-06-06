@@ -1,13 +1,17 @@
 # 1단계: 빌드 스테이지
-FROM node:24-alpine as build-stage
+FROM node:24-alpine AS build-stage
 WORKDIR /app
 
-# yarn 관련 파일 복사
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+ENV HUSKY=0
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm config set minimum-release-age 0 \
+    && pnpm install --frozen-lockfile
 
 COPY . .
-RUN yarn build
+RUN pnpm build
 
 # 2단계: 실행 스테이지 (Nginx)
 FROM nginx:stable-alpine
