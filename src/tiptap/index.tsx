@@ -92,6 +92,16 @@ const TiptapEditor = ({
       onUpdate: ({ editor: currentEditor }) => {
         onChange?.(currentEditor.getHTML());
       },
+      editorProps: {
+        transformPastedHTML: (html) => {
+          const doc = new DOMParser().parseFromString(html, "text/html");
+          doc.querySelectorAll("img").forEach((img) => {
+            console.log(img);
+            img.remove();
+          });
+          return doc.body.innerHTML;
+        },
+      },
     },
     [onChange],
   );

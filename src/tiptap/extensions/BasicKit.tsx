@@ -54,6 +54,7 @@ const Nodes = [
   HorizontalRule,
   Youtube,
   Image.configure({
+    allowBase64: true,
     resize: {
       enabled: true,
       directions: ["top-left", "top-right", "bottom-left", "bottom-right"], // can be any direction or diagonal combination

@@ -87,7 +87,7 @@ export const useFileHandler = ({
 
   const handleDrop: FileHandlerOptions["onDrop"] = useCallback(
     async (currentEditor, files, pos) => {
-      for (const file of files) {
+      for (const file of files.reverse()) {
         const url = await resolveFileUrl(file);
         onFileInsert?.(file);
         insertFile(currentEditor, file, url, pos);
@@ -98,22 +98,51 @@ export const useFileHandler = ({
 
   const handlePaste: FileHandlerOptions["onPaste"] = useCallback(
     async (currentEditor, files, htmlContent) => {
-      if (htmlContent) {
+      if (!htmlContent) {
+        for (const file of files.reverse()) {
+          const url = await resolveFileUrl(file);
+          onFileInsert?.(file);
+          insertFile(
+            currentEditor,
+            file,
+            url,
+            currentEditor.state.selection.anchor,
+          );
+        }
+        return;
+      }
+
+      const doc = new DOMParser().parseFromString(htmlContent, "text/html");
+      const imgTags = [...doc.querySelectorAll("img")];
+
+      if (imgTags.length === 0) {
         onFileError?.(
           new Error("외부에서 복사해온 파일을 바로 붙여넣기할 수 없습니다"),
         );
         return;
       }
-      for (const file of files) {
-        const url = await resolveFileUrl(file);
-        onFileInsert?.(file);
-        insertFile(
-          currentEditor,
-          file,
-          url,
-          currentEditor.state.selection.anchor,
-        );
-      }
+
+      const imageFiles = files.filter((f) => f.type.startsWith("image/"));
+
+      await Promise.all(
+        imgTags.map(async (img, i) => {
+          const file = imageFiles[i];
+          if (file) {
+            try {
+              const url = await resolveFileUrl(file);
+              img.src = url;
+              onFileInsert?.(file);
+            } catch (err) {
+              onFileError?.(err as Error);
+              img.remove();
+            }
+          } else {
+            img.remove();
+          }
+        }),
+      );
+
+      currentEditor.commands.insertContent(doc.body.innerHTML);
     },
     [resolveFileUrl, onFileError, onFileInsert],
   );
