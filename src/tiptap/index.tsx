@@ -10,7 +10,6 @@ import {
   BackgroundColor,
 } from "@tiptap/extension-text-style";
 import TextAlign from "@tiptap/extension-text-align";
-import { TableKit, TableCell } from "@tiptap/extension-table";
 import { Gapcursor } from "@tiptap/extensions";
 import FileHandler from "@tiptap/extension-file-handler";
 import Image from "@tiptap/extension-image";
@@ -18,6 +17,7 @@ import {
   FileAttachment,
   type FileAttachmentAttributes,
 } from "./extensions/FileAttachment";
+import { TableKit } from "./extensions/TableKit";
 
 export interface TiptapProps {
   /**
@@ -171,33 +171,7 @@ const TiptapEditor = ({
       FileAttachment.configure({
         ...(FileAttachmentComponent && { component: FileAttachmentComponent }),
       }),
-      TableKit.configure({
-        table: { resizable: true },
-      }),
-      // TableCell extension을 별도로 extend 해 준 이유
-      // https://github.com/ueberdosis/tiptap/issues/862
-      TableCell.extend({
-        addAttributes() {
-          return {
-            ...this.parent?.(),
-            backgroundColor: {
-              default: null,
-              renderHTML: (attributes) => {
-                if (!attributes.backgroundColor) {
-                  return {};
-                }
-
-                return {
-                  style: `background-color: ${attributes.backgroundColor}`,
-                };
-              },
-              parseHTML: (element) => {
-                return element.style.backgroundColor.replace(/['"]+/g, "");
-              },
-            },
-          };
-        },
-      }),
+      TableKit,
       FileHandler.configure({
         allowedMimeTypes: allowNonImageFile ? undefined : IMAGE_MIME_TYPES,
         onDrop: async (currentEditor, files, pos) => {
