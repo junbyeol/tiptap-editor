@@ -1,7 +1,6 @@
-/* eslint-disable react-hooks/refs */
 import { useEditor, EditorContent, EditorContext } from "@tiptap/react";
 import MenuBar from "./menubar";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import type { ComponentType } from "react";
 import FileHandler from "@tiptap/extension-file-handler";
 import {
@@ -10,6 +9,7 @@ import {
   FileAttachment,
   type FileAttachmentAttributes,
 } from "./extensions";
+import { useFileHandler } from "./hooks/useFileHandler";
 
 export interface TiptapProps {
   /**
@@ -54,19 +54,6 @@ export interface TiptapProps {
   FileAttachmentComponent?: ComponentType<FileAttachmentAttributes>;
 }
 
-//브라우저 메모리에 파일을 base64 형식으로 저장하는 함수
-const readFileAsDataUrl = (file: File): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-
-const IMAGE_MIME_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp"];
-
-const isImageFile = (file: File) => file.type.startsWith("image/");
-
 const TiptapEditor = ({
   defaultValue = "",
   onChange,
@@ -78,112 +65,36 @@ const TiptapEditor = ({
   allowNonImageFile = false,
   FileAttachmentComponent,
 }: TiptapProps) => {
-  // useEditor는 초기 마운트 시에만 extensions를 처리하므로
-  // prop 콜백이 변경돼도 stale 클로저가 되지 않도록 ref로 관리
-  const onChangeRef = useRef(onChange);
-  const uploadFileRef = useRef(uploadFile);
-  const onFileInsertRef = useRef(onFileInsert);
-  const onFileErrorRef = useRef(onFileError);
-
-  useEffect(() => {
-    onChangeRef.current = onChange;
-  }, [onChange]);
-
-  useEffect(() => {
-    uploadFileRef.current = uploadFile;
-  }, [uploadFile]);
-
-  useEffect(() => {
-    onFileInsertRef.current = onFileInsert;
-  }, [onFileInsert]);
-
-  useEffect(() => {
-    onFileErrorRef.current = onFileError;
-  }, [onFileError]);
-
-  const resolveFileUrl = useCallback(async (file: File): Promise<string> => {
-    if (uploadFileRef.current) {
-      return await uploadFileRef.current(file);
-    }
-    return await readFileAsDataUrl(file);
-  }, []);
-
-  const insertFile = useCallback(
-    (
-      currentEditor: ReturnType<typeof useEditor>,
-      file: File,
-      url: string,
-      pos: number,
-    ) => {
-      if (!currentEditor) return;
-
-      if (isImageFile(file)) {
-        currentEditor
-          .chain()
-          .insertContentAt(pos, { type: "image", attrs: { src: url } })
-          .focus()
-          .run();
-        return;
-      }
-
-      currentEditor
-        .chain()
-        .insertContentAt(pos, {
-          type: "fileAttachment",
-          attrs: {
-            name: file.name,
-            mimeType: file.type,
-            url,
-            size: file.size,
-          } satisfies FileAttachmentAttributes,
-        })
-        .focus()
-        .run();
-    },
-    [],
-  );
-
-  const editor = useEditor({
-    extensions: [
-      BasicKit,
-      TableKit,
-      FileAttachment.configure({
-        ...(FileAttachmentComponent && { component: FileAttachmentComponent }),
-      }),
-      FileHandler.configure({
-        allowedMimeTypes: allowNonImageFile ? undefined : IMAGE_MIME_TYPES,
-        onDrop: async (currentEditor, files, pos) => {
-          for (const file of files) {
-            const url = await resolveFileUrl(file);
-            onFileInsertRef.current?.(file);
-            insertFile(currentEditor, file, url, pos);
-          }
-        },
-        onPaste: async (currentEditor, files, htmlContent) => {
-          if (htmlContent) {
-            onFileErrorRef.current?.(
-              new Error("외부에서 복사해온 파일을 바로 붙여넣기할 수 없습니다"),
-            );
-            return;
-          }
-          for (const file of files) {
-            const url = await resolveFileUrl(file);
-            onFileInsertRef.current?.(file);
-            insertFile(
-              currentEditor,
-              file,
-              url,
-              currentEditor.state.selection.anchor,
-            );
-          }
-        },
-      }),
-    ],
-    content: defaultValue,
-    onUpdate: ({ editor: currentEditor }) => {
-      onChangeRef.current?.(currentEditor.getHTML());
-    },
+  const { handleDrop, handlePaste, allowedMimeTypes } = useFileHandler({
+    uploadFile,
+    onFileInsert,
+    onFileError,
+    allowNonImageFile,
   });
+
+  const editor = useEditor(
+    {
+      extensions: [
+        BasicKit,
+        TableKit,
+        FileAttachment.configure({
+          ...(FileAttachmentComponent && {
+            component: FileAttachmentComponent,
+          }),
+        }),
+        FileHandler.configure({
+          allowedMimeTypes,
+          onDrop: handleDrop,
+          onPaste: handlePaste,
+        }),
+      ],
+      content: defaultValue,
+      onUpdate: ({ editor: currentEditor }) => {
+        onChange?.(currentEditor.getHTML());
+      },
+    },
+    [onChange],
+  );
 
   const providerValue = useMemo(() => ({ editor }), [editor]);
 
