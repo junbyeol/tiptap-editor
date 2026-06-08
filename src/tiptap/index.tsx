@@ -1,23 +1,15 @@
 /* eslint-disable react-hooks/refs */
 import { useEditor, EditorContent, EditorContext } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import MenuBar from "./menubar";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { ComponentType } from "react";
-import {
-  TextStyle,
-  Color,
-  BackgroundColor,
-} from "@tiptap/extension-text-style";
-import TextAlign from "@tiptap/extension-text-align";
-import { Gapcursor } from "@tiptap/extensions";
 import FileHandler from "@tiptap/extension-file-handler";
-import Image from "@tiptap/extension-image";
 import {
+  BasicKit,
+  TableKit,
   FileAttachment,
   type FileAttachmentAttributes,
-} from "./extensions/FileAttachment";
-import { TableKit } from "./extensions/TableKit";
+} from "./extensions";
 
 export interface TiptapProps {
   /**
@@ -153,25 +145,11 @@ const TiptapEditor = ({
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
-      TextStyle,
-      Color,
-      BackgroundColor,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Gapcursor,
-      Image.configure({
-        resize: {
-          enabled: true,
-          directions: ["top-left", "top-right", "bottom-left", "bottom-right"], // can be any direction or diagonal combination
-          minWidth: 50,
-          minHeight: 50,
-          alwaysPreserveAspectRatio: true,
-        },
-      }),
+      BasicKit,
+      TableKit,
       FileAttachment.configure({
         ...(FileAttachmentComponent && { component: FileAttachmentComponent }),
       }),
-      TableKit,
       FileHandler.configure({
         allowedMimeTypes: allowNonImageFile ? undefined : IMAGE_MIME_TYPES,
         onDrop: async (currentEditor, files, pos) => {

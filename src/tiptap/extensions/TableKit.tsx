@@ -1,5 +1,10 @@
 import { Extension } from "@tiptap/core";
-import { TableKit as TiptapTableKit, TableCell } from "@tiptap/extension-table";
+import {
+  Table,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from "@tiptap/extension-table";
 
 // TableCell extension을 별도로 extend 해 준 이유
 // https://github.com/ueberdosis/tiptap/issues/862
@@ -29,10 +34,12 @@ export const ExtendedTableCell = TableCell.extend({
 export const TableKit = Extension.create({
   addExtensions() {
     return [
-      TiptapTableKit.configure({
-        table: { resizable: true },
+      Table.configure({
+        resizable: true,
       }),
       ExtendedTableCell,
+      TableHeader,
+      TableRow,
     ];
   },
 });
