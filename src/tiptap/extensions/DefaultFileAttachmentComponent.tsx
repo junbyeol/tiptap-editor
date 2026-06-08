@@ -1,4 +1,4 @@
-import type { FileAttachmentAttributes } from "./file-attachment";
+import type { FileAttachmentAttributes } from "./FileAttachment";
 
 export const DefaultFileAttachmentComponent = ({
   name,

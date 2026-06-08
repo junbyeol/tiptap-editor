@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/refs */
 import { useEditor, EditorContent, EditorContext } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import MenuBar from "./menubar";
@@ -14,10 +15,9 @@ import { Gapcursor } from "@tiptap/extensions";
 import FileHandler from "@tiptap/extension-file-handler";
 import Image from "@tiptap/extension-image";
 import {
-  createFileAttachmentExtension,
+  FileAttachment,
   type FileAttachmentAttributes,
-} from "./extensions/file-attachment";
-import { DefaultFileAttachmentComponent } from "./extensions/default-file-attachment";
+} from "./extensions/FileAttachment";
 
 export interface TiptapProps {
   /**
@@ -84,7 +84,7 @@ const TiptapEditor = ({
   onFileInsert,
   onFileError,
   allowNonImageFile = false,
-  FileAttachmentComponent = DefaultFileAttachmentComponent,
+  FileAttachmentComponent,
 }: TiptapProps) => {
   // useEditor는 초기 마운트 시에만 extensions를 처리하므로
   // prop 콜백이 변경돼도 stale 클로저가 되지 않도록 ref로 관리
@@ -92,7 +92,6 @@ const TiptapEditor = ({
   const uploadFileRef = useRef(uploadFile);
   const onFileInsertRef = useRef(onFileInsert);
   const onFileErrorRef = useRef(onFileError);
-  const fileAttachmentComponentRef = useRef(FileAttachmentComponent);
 
   useEffect(() => {
     onChangeRef.current = onChange;
@@ -109,10 +108,6 @@ const TiptapEditor = ({
   useEffect(() => {
     onFileErrorRef.current = onFileError;
   }, [onFileError]);
-
-  useEffect(() => {
-    fileAttachmentComponentRef.current = FileAttachmentComponent;
-  }, [FileAttachmentComponent]);
 
   const resolveFileUrl = useCallback(async (file: File): Promise<string> => {
     if (uploadFileRef.current) {
@@ -173,7 +168,9 @@ const TiptapEditor = ({
           alwaysPreserveAspectRatio: true,
         },
       }),
-      createFileAttachmentExtension(fileAttachmentComponentRef),
+      FileAttachment.configure({
+        ...(FileAttachmentComponent && { component: FileAttachmentComponent }),
+      }),
       TableKit.configure({
         table: { resizable: true },
       }),
