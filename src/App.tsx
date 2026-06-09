@@ -38,7 +38,17 @@ function App() {
         defaultValue={DEMO_INITIAL_CONTENT}
         onChange={(html) => console.log("[demo] onChange:", html)}
         // uploadFile={uploadFile}
-        onFileInsert={(file) =>
+        onUploadStart={(file) =>
+          toast(`${file.name} 업로드 시작`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            transition: Bounce,
+          })
+        }
+        onUploadSuccess={(file) =>
           toast.success(`${file.name} 업로드 완료`, {
             position: "top-center",
             autoClose: 5000,
@@ -51,7 +61,7 @@ function App() {
             transition: Bounce,
           })
         }
-        onFileError={(error) =>
+        onUploadError={(error) =>
           toast.error(`${error.message} 업로드 실패`, {
             position: "top-center",
             autoClose: 5000,

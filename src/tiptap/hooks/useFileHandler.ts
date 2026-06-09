@@ -10,13 +10,17 @@ export interface UseFileHandlerAttributes {
    */
   uploadFile?: (file: File) => Promise<string>;
   /**
-   * 파일이 에디터에 삽입될 때 호출되는 콜백.
+   * 파일이 업로드될 때 호출되는 콜백.
    */
-  onFileInsert?: (file: File) => void;
+  onUploadStart?: (file: File) => void;
   /**
-   * 파일 업로드 오류 시 호출되는 콜백.
+   * 파일 업로드가 성공했을 때 호출되는 콜백.
    */
-  onFileError?: (error: Error) => void;
+  onUploadSuccess?: (file: File) => void;
+  /**
+   * 파일 업로드가 실패했을 때 호출되는 콜백.
+   */
+  onUploadError?: (error: Error, file?: File) => void;
   /**
    * true 시 이미지 외 파일(PDF, Word 등)도 허용.
    * FileAttachmentComponent가 함께 제공되어야 에디터에 렌더링됨.
@@ -39,64 +43,79 @@ const IMAGE_MIME_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp"];
 
 export const useFileHandler = ({
   uploadFile,
-  onFileInsert,
-  onFileError,
+  onUploadStart,
+  onUploadSuccess,
+  onUploadError,
   allowNonImageFile = false,
 }: UseFileHandlerAttributes) => {
   const resolveFileUrl = useCallback(
-    async (file: File): Promise<string> => {
-      if (uploadFile) {
-        return await uploadFile(file);
+    async (file: File): Promise<string | null> => {
+      onUploadStart?.(file);
+      try {
+        const url = uploadFile
+          ? await uploadFile(file)
+          : await readFileAsDataUrl(file);
+        return url;
+      } catch (err) {
+        onUploadError?.(
+          err instanceof Error ? err : new Error("Upload failed"),
+          file,
+        );
+        return null;
       }
-      return await readFileAsDataUrl(file);
     },
-    [uploadFile],
+    [uploadFile, onUploadStart, onUploadError],
   );
 
-  const insertFile = (
-    currentEditor: ReturnType<typeof useEditor>,
-    file: File,
-    url: string,
-    pos: number,
-  ) => {
-    if (!currentEditor) return;
+  const insertFile = useCallback(
+    (
+      currentEditor: ReturnType<typeof useEditor>,
+      file: File,
+      url: string,
+      pos: number,
+    ) => {
+      if (!currentEditor) return;
 
-    if (isImageFile(file)) {
+      if (isImageFile(file)) {
+        currentEditor
+          .chain()
+          .insertContentAt(pos, { type: "image", attrs: { src: url } })
+          .focus()
+          .run();
+        onUploadSuccess?.(file);
+        return;
+      }
+
       currentEditor
         .chain()
-        .insertContentAt(pos, { type: "image", attrs: { src: url } })
+        .insertContentAt(pos, {
+          type: "fileAttachment",
+          attrs: {
+            name: file.name,
+            mimeType: file.type,
+            url,
+            size: file.size,
+          } satisfies FileAttachmentAttributes,
+        })
         .focus()
         .run();
-      return;
-    }
+      onUploadSuccess?.(file);
+    },
+    [onUploadSuccess],
+  );
 
-    currentEditor
-      .chain()
-      .insertContentAt(pos, {
-        type: "fileAttachment",
-        attrs: {
-          name: file.name,
-          mimeType: file.type,
-          url,
-          size: file.size,
-        } satisfies FileAttachmentAttributes,
-      })
-      .focus()
-      .run();
-  };
-
-  const handleDrop: FileHandlerOptions["onDrop"] = useCallback(
+  const handleDrop = useCallback<NonNullable<FileHandlerOptions["onDrop"]>>(
     async (currentEditor, files, pos) => {
       for (const file of files.reverse()) {
         const url = await resolveFileUrl(file);
-        onFileInsert?.(file);
+        if (!url) return;
         insertFile(currentEditor, file, url, pos);
       }
     },
-    [resolveFileUrl, onFileInsert],
+    [resolveFileUrl, insertFile],
   );
 
-  const handlePaste: FileHandlerOptions["onPaste"] = useCallback(
+  const handlePaste = useCallback<NonNullable<FileHandlerOptions["onPaste"]>>(
     async (currentEditor, files, htmlContent) => {
       console.log(
         "[FileHandler onPaste] files:",
@@ -107,7 +126,7 @@ export const useFileHandler = ({
       if (!htmlContent) {
         for (const file of files.reverse()) {
           const url = await resolveFileUrl(file);
-          onFileInsert?.(file);
+          if (!url) return;
           insertFile(
             currentEditor,
             file,
@@ -122,7 +141,7 @@ export const useFileHandler = ({
       const imgTags = [...doc.querySelectorAll("img")];
 
       if (imgTags.length === 0) {
-        onFileError?.(
+        onUploadError?.(
           new Error("외부에서 복사해온 파일을 바로 붙여넣기할 수 없습니다"),
         );
         return;
@@ -134,14 +153,12 @@ export const useFileHandler = ({
         imgTags.map(async (img, i) => {
           const file = imageFiles[i];
           if (file) {
-            try {
-              const url = await resolveFileUrl(file);
-              img.src = url;
-              onFileInsert?.(file);
-            } catch (err) {
-              onFileError?.(err as Error);
+            const url = await resolveFileUrl(file);
+            if (!url) {
               img.remove();
+              return;
             }
+            img.src = url;
           } else {
             img.remove();
           }
@@ -150,7 +167,7 @@ export const useFileHandler = ({
 
       currentEditor.commands.insertContent(doc.body.innerHTML);
     },
-    [resolveFileUrl, onFileError, onFileInsert],
+    [resolveFileUrl, insertFile, onUploadError],
   );
 
   const allowedMimeTypes = useMemo(
