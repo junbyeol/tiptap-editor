@@ -20,10 +20,14 @@ import {
   RiMergeCellsHorizontal,
 } from "@remixicon/react";
 import { TableCellBackgroundColorPopover } from "@/components/custom/table-cell-background-color-popover";
+import { UploadableDropdownMenu } from "@/components/custom/uploadable-dropdown-menu/uploadable-dropdown-menu";
 
 export default function menubar({ editor }: { editor: Editor }) {
   return (
     <Toolbar className="my-toolbar">
+      <ToolbarGroup>
+        <UploadableDropdownMenu />
+      </ToolbarGroup>
       <ToolbarGroup>
         <UndoRedoButton editor={editor} tooltip="실행 취소" action="undo" />
         <UndoRedoButton editor={editor} tooltip="다시 실행" action="redo" />

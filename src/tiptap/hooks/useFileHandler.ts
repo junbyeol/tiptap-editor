@@ -41,7 +41,7 @@ export const useFileHandler = ({
   uploadFile,
   onFileInsert,
   onFileError,
-  allowNonImageFile,
+  allowNonImageFile = false,
 }: UseFileHandlerAttributes) => {
   const resolveFileUrl = useCallback(
     async (file: File): Promise<string> => {
@@ -98,6 +98,12 @@ export const useFileHandler = ({
 
   const handlePaste: FileHandlerOptions["onPaste"] = useCallback(
     async (currentEditor, files, htmlContent) => {
+      console.log(
+        "[FileHandler onPaste] files:",
+        files,
+        "htmlContent:",
+        htmlContent,
+      );
       if (!htmlContent) {
         for (const file of files.reverse()) {
           const url = await resolveFileUrl(file);
@@ -152,5 +158,11 @@ export const useFileHandler = ({
     [allowNonImageFile],
   );
 
-  return { handleDrop, handlePaste, allowedMimeTypes };
+  return {
+    handleDrop,
+    handlePaste,
+    allowedMimeTypes,
+    resolveFileUrl,
+    insertFile,
+  };
 };
