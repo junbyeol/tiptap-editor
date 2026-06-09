@@ -10,6 +10,7 @@ import {
   type FileAttachmentAttributes,
 } from "./extensions";
 import { useFileHandler } from "./hooks/useFileHandler";
+import { FileHandlerContext } from "./contexts/FileHandlerContext";
 
 export interface TiptapProps {
   /**
@@ -62,15 +63,26 @@ const TiptapEditor = ({
   uploadFile,
   onFileInsert,
   onFileError,
-  allowNonImageFile = false,
+  allowNonImageFile,
   FileAttachmentComponent,
 }: TiptapProps) => {
-  const { handleDrop, handlePaste, allowedMimeTypes } = useFileHandler({
+  const {
+    handleDrop,
+    handlePaste,
+    allowedMimeTypes,
+    resolveFileUrl,
+    insertFile,
+  } = useFileHandler({
     uploadFile,
     onFileInsert,
     onFileError,
     allowNonImageFile,
   });
+
+  const fileHandlerContextValue = useMemo(
+    () => ({ resolveFileUrl, insertFile }),
+    [resolveFileUrl, insertFile],
+  );
 
   const editor = useEditor(
     {
@@ -111,8 +123,10 @@ const TiptapEditor = ({
   return (
     <TiptapWrapper minHeight={minHeight} maxHeight={maxHeight}>
       <EditorContext.Provider value={providerValue}>
-        <MenuBar editor={editor} />
-        <EditorContent editor={editor} />
+        <FileHandlerContext.Provider value={fileHandlerContextValue}>
+          <MenuBar editor={editor} />
+          <EditorContent editor={editor} />
+        </FileHandlerContext.Provider>
       </EditorContext.Provider>
     </TiptapWrapper>
   );
