@@ -67,6 +67,9 @@ export const UploadableButton = forwardRef<
         const pos = editor.state.selection.anchor;
         for (const file of files) {
           const url = await resolveFileUrl(file);
+          if (!url) {
+            return;
+          }
           insertFile(editor, file, url, pos);
         }
 

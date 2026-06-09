@@ -36,13 +36,17 @@ export interface TiptapProps {
    */
   uploadFile?: (file: File) => Promise<string>;
   /**
-   * 파일이 에디터에 삽입될 때 호출되는 콜백.
+   * 파일이 업로드될 때 호출되는 콜백.
    */
-  onFileInsert?: (file: File) => void;
+  onUploadStart?: (file: File) => void;
   /**
-   * 파일 업로드 오류 시 호출되는 콜백.
+   * 파일이 업로드될 때 호출되는 콜백.
    */
-  onFileError?: (error: Error) => void;
+  onUploadSuccess?: (file: File) => void;
+  /**
+   * 파일이 업로드 오류 시 호출되는 콜백.
+   */
+  onUploadError?: (error: Error) => void;
   /**
    * true 시 이미지 외 파일(PDF, Word 등)도 허용.
    * FileAttachmentComponent가 함께 제공되어야 에디터에 렌더링됨.
@@ -61,8 +65,9 @@ const TiptapEditor = ({
   minHeight,
   maxHeight,
   uploadFile,
-  onFileInsert,
-  onFileError,
+  onUploadStart,
+  onUploadSuccess,
+  onUploadError,
   allowNonImageFile,
   FileAttachmentComponent,
 }: TiptapProps) => {
@@ -74,8 +79,9 @@ const TiptapEditor = ({
     insertFile,
   } = useFileHandler({
     uploadFile,
-    onFileInsert,
-    onFileError,
+    onUploadStart,
+    onUploadSuccess,
+    onUploadError,
     allowNonImageFile,
   });
 

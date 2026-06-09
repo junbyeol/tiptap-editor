@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 import type { useEditor } from "@tiptap/react";
 
 export interface FileHandlerContextValue {
-  resolveFileUrl: (file: File) => Promise<string>;
+  resolveFileUrl: (file: File) => Promise<string | null>;
   insertFile: (
     editor: ReturnType<typeof useEditor>,
     file: File,
