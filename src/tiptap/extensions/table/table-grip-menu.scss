@@ -1,0 +1,29 @@
+.table-grip-handle {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: var(--tt-radius-xxs);
+  background-color: var(--tt-gray-light-a-300);
+  cursor: pointer;
+
+  &:hover,
+  &[data-state="open"] {
+    background-color: var(--tt-gray-light-a-400);
+  }
+
+  .dark & {
+    background-color: var(--tt-gray-dark-a-300);
+
+    &:hover,
+    &[data-state="open"] {
+      background-color: var(--tt-gray-dark-a-400);
+    }
+  }
+}
+
+.tiptap-table-grip-menu-item {
+  width: 100%;
+  justify-content: flex-start;
+}

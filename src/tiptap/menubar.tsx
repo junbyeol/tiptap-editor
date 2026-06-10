@@ -9,6 +9,8 @@ import { TextStyleDropdownMenu } from "@/components/custom/text-style-dropdown-m
 import { TextAlignButton } from "@/components/tiptap-ui/text-align-button";
 import { MarkButton } from "@/components/tiptap-ui/mark-button";
 import { UploadableDropdownMenu } from "@/components/custom/uploadable-dropdown-menu/uploadable-dropdown-menu";
+import { Button } from "@/components/tiptap-ui-primitive/button";
+import { TableIcon } from "@/components/tiptap-icons/table-icon";
 
 export default function menubar({ editor }: { editor: Editor }) {
   return (
@@ -23,43 +25,14 @@ export default function menubar({ editor }: { editor: Editor }) {
         <MarkButton type="superscript" />
         <MarkButton type="subscript" />
         <MarkButton type="underline" />
-        <ColorTextPopover editor={editor} />
-        <ToolbarSeparator />
-        <TextAlignButton editor={editor} align="left" />
-        <TextAlignButton align="center" />
-        <TextAlignButton align="right" />
-        <TextAlignButton align="justify" />
-        <ToolbarSeparator />
-      </ToolbarGroup>
-      {/* <ToolbarGroup>
-        <UndoRedoButton editor={editor} tooltip="실행 취소" action="undo" />
-        <UndoRedoButton editor={editor} tooltip="다시 실행" action="redo" />
-        <ToolbarSeparator />
-        <MarkButton type="bold" />
-        <MarkButton type="italic" />
-        <MarkButton type="strike" />
         <MarkButton type="code" />
-        <MarkButton type="superscript" />
-        <MarkButton type="subscript" />
-        <MarkButton type="underline" />
         <ColorTextPopover editor={editor} />
-        <HeadingDropdownMenu
-          editor={editor}
-          levels={[1, 2, 3, 4]}
-          hideWhenUnavailable={true}
-          portal={false}
-        />
         <ToolbarSeparator />
         <TextAlignButton editor={editor} align="left" />
         <TextAlignButton align="center" />
         <TextAlignButton align="right" />
         <TextAlignButton align="justify" />
         <ToolbarSeparator />
-        <ListButton editor={editor} type="bulletList" />
-        <ListButton editor={editor} type="orderedList" />
-      </ToolbarGroup>
-
-      <ToolbarGroup>
         <Button
           data-style="ghost"
           tooltip="표 삽입"
@@ -71,45 +44,9 @@ export default function menubar({ editor }: { editor: Editor }) {
               .run()
           }
         >
-          <RiTable2 className="tiptap-button-icon" />
+          <TableIcon />
         </Button>
-        <Button
-          data-style="ghost"
-          tooltip="열 추가"
-          onClick={() => editor.chain().focus().addColumnAfter().run()}
-        >
-          <RiInsertColumnRight className="tiptap-button-icon" />
-        </Button>
-        <Button
-          data-style="ghost"
-          tooltip="열 제거"
-          onClick={() => editor.chain().focus().deleteColumn().run()}
-        >
-          <RiDeleteColumn className="tiptap-button-icon" />
-        </Button>
-        <Button
-          data-style="ghost"
-          tooltip="행 추가"
-          onClick={() => editor.chain().focus().addRowAfter().run()}
-        >
-          <RiInsertRowBottom className="tiptap-button-icon" />
-        </Button>
-        <Button
-          data-style="ghost"
-          tooltip="행 제거"
-          onClick={() => editor.chain().focus().deleteRow().run()}
-        >
-          <RiDeleteRow className="tiptap-button-icon" />
-        </Button>
-        <Button
-          data-style="ghost"
-          tooltip="셀 병합"
-          onClick={() => editor.chain().focus().mergeOrSplit().run()}
-        >
-          <RiMergeCellsHorizontal className="tiptap-button-icon" />
-        </Button>
-        <TableCellBackgroundColorPopover editor={editor} />
-      </ToolbarGroup> */}
+      </ToolbarGroup>
     </Toolbar>
   );
 }

@@ -134,7 +134,7 @@ export function getFormattedMarkName(type: Mark): string {
     bold: "굵게",
     italic: "기울임꼴",
     strike: "취소선",
-    code: "코드 표시",
+    code: "코드",
     underline: "밑줄",
     superscript: "위첨자",
     subscript: "아래첨자",
