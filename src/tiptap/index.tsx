@@ -111,6 +111,9 @@ const TiptapEditor = ({
         onChange?.(currentEditor.getHTML());
       },
       editorProps: {
+        attributes: {
+          class: "tiptap tiptap-typography",
+        },
         transformPastedHTML: (html) => {
           const doc = new DOMParser().parseFromString(html, "text/html");
           doc.querySelectorAll("img").forEach((img) => {

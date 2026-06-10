@@ -1,7 +1,8 @@
 import { Extension } from "@tiptap/core";
 import Document from "@tiptap/extension-document";
-import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
+
+import { Paragraph } from "./Paragraph";
 
 import Bold from "@tiptap/extension-bold";
 import Code from "@tiptap/extension-code";
