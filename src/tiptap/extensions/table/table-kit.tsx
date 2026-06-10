@@ -5,6 +5,7 @@ import {
   TableHeader,
   TableRow,
 } from "@tiptap/extension-table";
+import { GripTableView } from "./table-view";
 
 // TableCell extension을 별도로 extend 해 준 이유
 // https://github.com/ueberdosis/tiptap/issues/862
@@ -36,6 +37,7 @@ export const TableKit = Extension.create({
     return [
       Table.configure({
         resizable: true,
+        View: GripTableView,
       }),
       ExtendedTableCell,
       TableHeader,

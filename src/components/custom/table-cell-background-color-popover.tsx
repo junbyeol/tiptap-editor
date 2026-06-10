@@ -34,7 +34,7 @@ interface ColoredButtonIconProps {
   className?: string;
 }
 
-const ColoredButtonIcon = ({
+export const ColoredButtonIcon = ({
   backgroundColorHex,
   borderColorHex,
   className = "",
