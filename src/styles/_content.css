@@ -1,160 +1,210 @@
-/* Basic editor styles */
-.tiptap {
-  --gray-1: var(--tt-gray-light-50);
-  --gray-2: var(--tt-gray-light-a-200);
-  --gray-3: var(--tt-gray-light-a-300);
+/*
+ * 레이어 순서 선언: 나중에 선언된 레이어가 specificity와 무관하게 우선 적용됨.
+ * typography가 content보다 나중이므로, .tiptap 안에 font-size 규칙이 실수로
+ * 추가되더라도 .tiptap-typography가 항상 우선한다.
+ */
+@layer content, typography;
 
-  --purple: var(--tt-brand-color-500);
-  --purple-light: var(--tt-brand-color-100);
+@layer typography {
+  /*
+   * 헤딩/본문 크기의 font-size 스케일.
+   * 에디터 본문(.tiptap)과 텍스트 스타일 드롭다운의 미리보기에서 공용으로 사용.
+   */
+  .tiptap-typography {
+    /*
+     * 호스트 앱의 전역 스타일(color, line-height 등)이
+     * 상속되어 들어오지 않도록 기본값을 명시적으로 선언.
+     * font-family는 호스트 앱의 디자인을 따르도록 상속에 맡긴다.
+     */
+    color: var(--tt-gray-light-a-900);
+    line-height: 1.6;
 
-  :first-child {
-    margin-top: 0;
-  }
+    .dark & {
+      color: var(--tt-gray-dark-a-900);
+    }
 
-  /* List styles */
-  ul,
-  ol {
-    padding: 0 1rem;
-    margin: 1.25rem 1rem 1.25rem 0.4rem;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.1;
+    }
 
-    li p {
-      margin-top: 0.25em;
-      margin-bottom: 0.25em;
+    h1 {
+      font-size: 1.625rem;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+    }
+
+    h4,
+    h5,
+    h6 {
+      font-size: 1rem;
+    }
+
+    p,
+    p[data-size="normal"] {
+      font-size: 1rem;
+    }
+
+    p[data-size="small"] {
+      font-size: 0.875rem;
+    }
+
+    p[data-size="large"] {
+      font-size: 1.125rem;
     }
   }
+}
 
-  /* Heading styles */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    line-height: 1.1;
-    margin-top: 2.5rem;
-    text-wrap: pretty;
-  }
+@layer content {
+  /* Basic editor styles */
+  .tiptap {
+    --gray-1: var(--tt-gray-light-50);
+    --gray-2: var(--tt-gray-light-a-200);
+    --gray-3: var(--tt-gray-light-a-300);
 
-  h1,
-  h2 {
-    margin-top: 3.5rem;
-    margin-bottom: 1.5rem;
-  }
+    --purple: var(--tt-brand-color-500);
+    --purple-light: var(--tt-brand-color-100);
 
-  h1 {
-    font-size: 1.4rem;
-  }
-
-  h2 {
-    font-size: 1.2rem;
-  }
-
-  h3 {
-    font-size: 1.1rem;
-  }
-
-  h4,
-  h5,
-  h6 {
-    font-size: 1rem;
-  }
-
-  /* Code and preformatted text styles */
-  code {
-    background-color: var(--purple-light);
-    border-radius: 0.4rem;
-    color: var(--black);
-    font-size: 0.85rem;
-    padding: 0.25em 0.3em;
-  }
-
-  pre {
-    background: var(--black);
-    border-radius: 0.5rem;
-    color: var(--white);
-    font-family: "JetBrainsMono", monospace;
-    margin: 1.5rem 0;
-    padding: 0.75rem 1rem;
-
-    code {
-      background: none;
-      color: inherit;
-      font-size: 0.8rem;
-      padding: 0;
+    :first-child {
+      margin-top: 0;
     }
-  }
 
-  blockquote {
-    border-left: 3px solid var(--gray-3);
-    margin: 1.5rem 0;
-    padding-left: 1rem;
-  }
+    /* List styles */
+    ul,
+    ol {
+      padding: 0 1rem;
+      margin: 1.25rem 1rem 1.25rem 0.4rem;
 
-  hr {
-    border: none;
-    border-top: 1px solid var(--gray-2);
-    margin: 2rem 0;
-  }
-
-  /* Table-specific styling */
-  table {
-    border-collapse: collapse;
-    margin: 0;
-    overflow: hidden;
-    table-layout: fixed;
-    width: 100%;
-
-    td,
-    th {
-      border: 1px solid var(--gray-3);
-      box-sizing: border-box;
-      min-width: 1em;
-      padding: 6px 8px;
-      position: relative;
-      vertical-align: top;
-
-      > * {
-        margin-bottom: 0;
+      li p {
+        margin-top: 0.25em;
+        margin-bottom: 0.25em;
       }
     }
 
-    th {
-      background-color: var(--gray-1);
-      font-weight: bold;
-      text-align: left;
+    /* Heading layout styles */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-top: 2.5rem;
+      text-wrap: pretty;
     }
-  }
 
-  .tableWrapper {
-    margin: 1.5rem 0;
-    overflow-x: auto;
-  }
+    h1,
+    h2 {
+      margin-top: 3.5rem;
+      margin-bottom: 1.5rem;
+    }
 
-  &.resize-cursor {
-    cursor: ew-resize;
-    cursor: col-resize;
-  }
+    /* Code and preformatted text styles */
+    code {
+      background-color: var(--purple-light);
+      border-radius: 0.4rem;
+      color: var(--black);
+      font-size: 0.85rem;
+      padding: 0.25em 0.3em;
+    }
 
-  /* File attachment node */
-  .file-attachment {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    background-color: var(--black);
-    border-radius: 9999px;
-    padding: 0.75rem 1.25rem;
-    text-decoration: none;
-    cursor: pointer;
-  }
+    pre {
+      background: var(--black);
+      border-radius: 0.5rem;
+      color: var(--white);
+      font-family: "JetBrainsMono", monospace;
+      margin: 1.5rem 0;
+      padding: 0.75rem 1rem;
 
-  .file-attachment__icon {
-    flex-shrink: 0;
-    color: var(--white);
-  }
+      code {
+        background: none;
+        color: inherit;
+        font-size: 0.8rem;
+        padding: 0;
+      }
+    }
 
-  .file-attachment__name {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--white);
+    blockquote {
+      border-left: 3px solid var(--gray-3);
+      margin: 1.5rem 0;
+      padding-left: 1rem;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--gray-2);
+      margin: 2rem 0;
+    }
+
+    /* Table-specific styling */
+    table {
+      border-collapse: collapse;
+      margin: 0;
+      overflow: hidden;
+      table-layout: fixed;
+      width: 100%;
+
+      td,
+      th {
+        border: 1px solid var(--gray-3);
+        box-sizing: border-box;
+        min-width: 1em;
+        padding: 6px 8px;
+        position: relative;
+        vertical-align: top;
+
+        > * {
+          margin-bottom: 0;
+        }
+      }
+
+      th {
+        background-color: var(--gray-1);
+        font-weight: bold;
+        text-align: left;
+      }
+    }
+
+    .tableWrapper {
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+
+    &.resize-cursor {
+      cursor: ew-resize;
+      cursor: col-resize;
+    }
+
+    /* File attachment node */
+    .file-attachment {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background-color: var(--black);
+      border-radius: 9999px;
+      padding: 0.75rem 1.25rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .file-attachment__icon {
+      flex-shrink: 0;
+      color: var(--white);
+    }
+
+    .file-attachment__name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
   }
 }

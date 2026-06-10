@@ -7,6 +7,7 @@ import { UndoRedoButton } from "../components/tiptap-ui/undo-redo-button";
 import type { Editor } from "@tiptap/react";
 import { ColorTextPopover } from "@/components/custom/color-text-popover";
 import { HeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-menu";
+import { TextStyleDropdownMenu } from "@/components/custom/text-style-dropdown-menu";
 import { TextAlignButton } from "@/components/tiptap-ui/text-align-button";
 import { ListButton } from "@/components/tiptap-ui/list-button";
 import { MarkButton } from "@/components/tiptap-ui/mark-button";
@@ -26,7 +27,8 @@ export default function menubar({ editor }: { editor: Editor }) {
   return (
     <Toolbar className="my-toolbar">
       <ToolbarGroup>
-        <UploadableDropdownMenu />
+        <UploadableDropdownMenu editor={editor} portal={false} />
+        <TextStyleDropdownMenu editor={editor} portal={false} />
       </ToolbarGroup>
       <ToolbarGroup>
         <UndoRedoButton editor={editor} tooltip="실행 취소" action="undo" />
