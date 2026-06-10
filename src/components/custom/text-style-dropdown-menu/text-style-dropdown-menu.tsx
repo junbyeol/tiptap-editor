@@ -91,7 +91,7 @@ export const TextStyleDropdownMenu = forwardRef<
             disabled={!canApply}
             data-disabled={!canApply}
             aria-label={label}
-            tooltip={label}
+            tooltip={"문단 모양"}
             {...buttonProps}
             ref={ref}
           >

@@ -130,7 +130,17 @@ export function shouldShowButton(props: {
  * Gets the formatted mark name
  */
 export function getFormattedMarkName(type: Mark): string {
-  return type.charAt(0).toUpperCase() + type.slice(1);
+  return {
+    bold: "굵게",
+    italic: "기울임꼴",
+    strike: "취소선",
+    code: "코드 표시",
+    underline: "밑줄",
+    superscript: "위첨자",
+    subscript: "아래첨자",
+  }[type];
+
+  // return type.charAt(0).toUpperCase() + type.slice(1);
 }
 
 /**

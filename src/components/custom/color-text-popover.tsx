@@ -197,7 +197,12 @@ export const ColorTextPopover = forwardRef<
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button data-style="ghost" {...buttonProps}>
+        <Button
+          data-style="ghost"
+          role="button"
+          tooltip="글자 색상"
+          {...buttonProps}
+        >
           <ColoredButtonIcon
             textColorHex={currentTextColor}
             backgroundColorHex={currentBackgroundColor}
@@ -258,12 +263,9 @@ export const ColorTextPopover = forwardRef<
               })}
             </CardItemGroup>
             <CardItemGroup orientation="horizontal">
-              {colors.slice(5, 10).map((item, index) => {
-                const isDefault = index === 0;
-                const hex = isDefault ? null : item.contrastColor;
-                const isActive =
-                  currentTextColor === hex ||
-                  (isDefault && currentTextColor === null);
+              {colors.slice(5, 10).map((item) => {
+                const hex = item.contrastColor;
+                const isActive = currentTextColor === hex;
                 return (
                   <Button
                     key={item.name}
@@ -317,12 +319,9 @@ export const ColorTextPopover = forwardRef<
               })}
             </CardItemGroup>
             <CardItemGroup orientation="horizontal">
-              {colors.slice(5, 10).map((item, index) => {
-                const isDefault = index === 0;
-                const hex = isDefault ? null : item.color;
-                const isActive =
-                  currentBackgroundColor === hex ||
-                  (isDefault && currentBackgroundColor === null);
+              {colors.slice(5, 10).map((item) => {
+                const hex = item.color;
+                const isActive = currentBackgroundColor === hex;
                 return (
                   <Button
                     key={item.name}

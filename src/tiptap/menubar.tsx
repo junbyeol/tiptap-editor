@@ -3,24 +3,11 @@ import {
   ToolbarGroup,
   ToolbarSeparator,
 } from "../components/tiptap-ui-primitive/toolbar";
-import { UndoRedoButton } from "../components/tiptap-ui/undo-redo-button";
 import type { Editor } from "@tiptap/react";
 import { ColorTextPopover } from "@/components/custom/color-text-popover";
-import { HeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-menu";
 import { TextStyleDropdownMenu } from "@/components/custom/text-style-dropdown-menu";
 import { TextAlignButton } from "@/components/tiptap-ui/text-align-button";
-import { ListButton } from "@/components/tiptap-ui/list-button";
 import { MarkButton } from "@/components/tiptap-ui/mark-button";
-import { Button } from "@/components/tiptap-ui-primitive/button";
-import {
-  RiTable2,
-  RiInsertColumnRight,
-  RiInsertRowBottom,
-  RiDeleteColumn,
-  RiDeleteRow,
-  RiMergeCellsHorizontal,
-} from "@remixicon/react";
-import { TableCellBackgroundColorPopover } from "@/components/custom/table-cell-background-color-popover";
 import { UploadableDropdownMenu } from "@/components/custom/uploadable-dropdown-menu/uploadable-dropdown-menu";
 
 export default function menubar({ editor }: { editor: Editor }) {
@@ -29,8 +16,22 @@ export default function menubar({ editor }: { editor: Editor }) {
       <ToolbarGroup>
         <UploadableDropdownMenu editor={editor} portal={false} />
         <TextStyleDropdownMenu editor={editor} portal={false} />
+        <ToolbarSeparator />
+        <MarkButton type="bold" />
+        <MarkButton type="italic" />
+        <MarkButton type="strike" />
+        <MarkButton type="superscript" />
+        <MarkButton type="subscript" />
+        <MarkButton type="underline" />
+        <ColorTextPopover editor={editor} />
+        <ToolbarSeparator />
+        <TextAlignButton editor={editor} align="left" />
+        <TextAlignButton align="center" />
+        <TextAlignButton align="right" />
+        <TextAlignButton align="justify" />
+        <ToolbarSeparator />
       </ToolbarGroup>
-      <ToolbarGroup>
+      {/* <ToolbarGroup>
         <UndoRedoButton editor={editor} tooltip="실행 취소" action="undo" />
         <UndoRedoButton editor={editor} tooltip="다시 실행" action="redo" />
         <ToolbarSeparator />
@@ -38,6 +39,8 @@ export default function menubar({ editor }: { editor: Editor }) {
         <MarkButton type="italic" />
         <MarkButton type="strike" />
         <MarkButton type="code" />
+        <MarkButton type="superscript" />
+        <MarkButton type="subscript" />
         <MarkButton type="underline" />
         <ColorTextPopover editor={editor} />
         <HeadingDropdownMenu
@@ -106,7 +109,7 @@ export default function menubar({ editor }: { editor: Editor }) {
           <RiMergeCellsHorizontal className="tiptap-button-icon" />
         </Button>
         <TableCellBackgroundColorPopover editor={editor} />
-      </ToolbarGroup>
+      </ToolbarGroup> */}
     </Toolbar>
   );
 }
