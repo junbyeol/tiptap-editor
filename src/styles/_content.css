@@ -155,7 +155,7 @@
 
       td,
       th {
-        border: 1px solid var(--gray-3);
+        border: 1px solid var(--tt-gray-light-a-400);
         box-sizing: border-box;
         min-width: 1em;
         padding: 6px 8px;
@@ -171,127 +171,6 @@
         background-color: var(--gray-1);
         font-weight: bold;
         text-align: left;
-      }
-    }
-
-    .tableWrapper {
-      position: relative;
-      margin: 1.5rem 0;
-      overflow-x: auto;
-      padding-left: 20px;
-      padding-top: 20px;
-      padding-right: 14px;
-      padding-bottom: 14px;
-
-      &:hover {
-        .table-add-row-button,
-        .table-add-column-button {
-          opacity: 1;
-          pointer-events: auto;
-        }
-      }
-    }
-
-    .table-controls {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 5;
-    }
-
-    .table-row-handle,
-    .table-column-handle {
-      position: absolute;
-      padding: 0;
-      border: none;
-      cursor: pointer;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.1s ease-in;
-
-      &.is-visible {
-        pointer-events: auto;
-        opacity: 1;
-      }
-    }
-
-    .table-row-handle {
-      left: 0;
-      width: 20px;
-    }
-
-    .table-column-handle {
-      top: 0;
-      height: 20px;
-    }
-
-    .table-add-row-button,
-    .table-add-column-button {
-      position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      border: none;
-      border-radius: var(--tt-radius-xxs);
-      background-color: var(--tt-gray-light-a-200);
-      color: var(--tt-gray-light-a-600);
-      font-size: 0.75rem;
-      line-height: 1;
-      cursor: pointer;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.1s ease-in, background-color 0.1s ease-in;
-
-      &:hover {
-        background-color: var(--tt-gray-light-a-400);
-      }
-
-      .dark & {
-        background-color: var(--tt-gray-dark-a-200);
-        color: var(--tt-gray-dark-a-600);
-
-        &:hover {
-          background-color: var(--tt-gray-dark-a-400);
-        }
-      }
-    }
-
-    /* 표 하단 바깥 거터(padding-bottom: 14px) */
-    .table-add-row-button {
-      left: 20px;
-      right: 14px;
-      bottom: 0;
-      height: 14px;
-    }
-
-    /* 표 우측 바깥 거터(padding-right: 14px), 하단 코너 포함 */
-    .table-add-column-button {
-      top: 20px;
-      bottom: 0;
-      right: 0;
-      width: 14px;
-    }
-
-    .table-drop-indicator {
-      position: absolute;
-      pointer-events: none;
-      background-color: var(--purple);
-      border-radius: var(--tt-radius-xxs);
-      opacity: 0;
-
-      &.is-visible {
-        opacity: 1;
-      }
-
-      &.table-drop-indicator--row {
-        height: 3px;
-        transform: translateY(-50%);
-      }
-
-      &.table-drop-indicator--column {
-        width: 3px;
-        transform: translateX(-50%);
       }
     }
 

@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import type { EditorView } from "@tiptap/pm/view";
 import type { Command } from "@tiptap/pm/state";
 import {
@@ -48,7 +48,6 @@ import {
   selectTableRow,
   type HoveredTableCell,
 } from "./table-row-column-utils";
-import "./table-grip-menu.scss";
 
 export interface TableGripMenuHandle {
   open: () => void;
@@ -67,10 +66,19 @@ export const TableGripMenu = forwardRef<
   TableGripMenuProps
 >(({ view, target, getHovered, onOpenChange, onGripMouseDown }, ref) => {
   const [open, setOpen] = useState(false);
+  const openedHovered = useRef<HoveredTableCell | null>(null);
 
   const handleOpenChange = (next: boolean) => {
     setOpen(next);
     onOpenChange?.(next);
+  };
+
+  const reselect = (hovered: HoveredTableCell) => {
+    if (target === "row") {
+      selectTableRow(view, hovered, hovered.row);
+    } else {
+      selectTableColumn(view, hovered, hovered.col);
+    }
   };
 
   useImperativeHandle(ref, () => ({
@@ -78,30 +86,25 @@ export const TableGripMenu = forwardRef<
       const hovered = getHovered();
       if (!hovered) return;
 
-      if (target === "row") {
-        selectTableRow(view, hovered, hovered.row);
-      } else {
-        selectTableColumn(view, hovered, hovered.col);
-      }
+      openedHovered.current = hovered;
+      reselect(hovered);
       handleOpenChange(true);
     },
   }));
 
   const runCommand = (command: Command) => {
     handleOpenChange(false);
+    const hovered = openedHovered.current;
+    if (hovered) reselect(hovered);
     command(view.state, view.dispatch);
     view.focus();
   };
 
   const applyBackgroundColor = (hex: string) => {
     handleOpenChange(false);
-    const hovered = getHovered();
+    const hovered = openedHovered.current;
     if (!hovered) return;
-    if (target === "row") {
-      selectTableRow(view, hovered, hovered.row);
-    } else {
-      selectTableColumn(view, hovered, hovered.col);
-    }
+    reselect(hovered);
     setCellAttr("backgroundColor", hex)(view.state, view.dispatch);
     view.focus();
   };
