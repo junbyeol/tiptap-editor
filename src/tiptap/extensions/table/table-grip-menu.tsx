@@ -95,6 +95,13 @@ export const TableGripMenu = forwardRef<
 
   const applyBackgroundColor = (hex: string) => {
     handleOpenChange(false);
+    const hovered = getHovered();
+    if (!hovered) return;
+    if (target === "row") {
+      selectTableRow(view, hovered, hovered.row);
+    } else {
+      selectTableColumn(view, hovered, hovered.col);
+    }
     setCellAttr("backgroundColor", hex)(view.state, view.dispatch);
     view.focus();
   };

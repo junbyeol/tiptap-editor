@@ -1,26 +1,48 @@
 .table-grip-handle {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
   padding: 0;
   border: none;
-  border-radius: var(--tt-radius-xxs);
-  background-color: var(--tt-gray-light-a-300);
+  background: transparent;
   cursor: pointer;
 
-  &:hover,
-  &[data-state="open"] {
-    background-color: var(--tt-gray-light-a-400);
+  &::before {
+    content: '';
+    border-radius: 999px;
+    background-color: var(--tt-gray-light-a-300);
+    transition: background-color 0.1s ease-in;
+  }
+
+  &:hover::before,
+  &[data-state="open"]::before {
+    background-color: var(--tt-gray-light-a-500);
   }
 
   .dark & {
-    background-color: var(--tt-gray-dark-a-300);
+    &::before {
+      background-color: var(--tt-gray-dark-a-300);
+    }
 
-    &:hover,
-    &[data-state="open"] {
-      background-color: var(--tt-gray-dark-a-400);
+    &:hover::before,
+    &[data-state="open"]::before {
+      background-color: var(--tt-gray-dark-a-500);
     }
   }
+}
+
+/* 행 그립: 거터(20px 너비) 안에 수직 pill */
+.table-row-handle .table-grip-handle::before {
+  width: 4px;
+  height: 24px;
+}
+
+/* 열 그립: 거터(20px 높이) 안에 수평 pill */
+.table-column-handle .table-grip-handle::before {
+  width: 24px;
+  height: 4px;
 }
 
 .tiptap-table-grip-menu-item {

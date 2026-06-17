@@ -178,6 +178,8 @@
       position: relative;
       margin: 1.5rem 0;
       overflow-x: auto;
+      padding-left: 20px;
+      padding-top: 20px;
 
       &:hover {
         .table-add-row-button,
@@ -200,8 +202,6 @@
       position: absolute;
       padding: 0;
       border: none;
-      border-radius: var(--tt-radius-xxs);
-      background-color: var(--tt-gray-light-a-300);
       cursor: pointer;
       pointer-events: none;
       opacity: 0;
@@ -211,28 +211,16 @@
         pointer-events: auto;
         opacity: 1;
       }
-
-      &:hover {
-        background-color: var(--tt-gray-light-a-400);
-      }
-
-      .dark & {
-        background-color: var(--tt-gray-dark-a-300);
-
-        &:hover {
-          background-color: var(--tt-gray-dark-a-400);
-        }
-      }
     }
 
     .table-row-handle {
       left: 0;
-      width: 6px;
+      width: 20px;
     }
 
     .table-column-handle {
       top: 0;
-      height: 6px;
+      height: 20px;
     }
 
     .table-add-row-button,
@@ -267,14 +255,14 @@
     }
 
     .table-add-row-button {
-      left: 0;
+      left: 20px;
       right: 0;
       bottom: 0;
       height: 8px;
     }
 
     .table-add-column-button {
-      top: 0;
+      top: 20px;
       bottom: 0;
       right: 0;
       width: 8px;

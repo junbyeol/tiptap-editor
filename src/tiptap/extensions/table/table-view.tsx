@@ -109,14 +109,23 @@ export class GripTableView extends TableView {
       />,
     );
 
-    this.dom.addEventListener("mousemove", this.handleMouseMove);
+    this.dom.addEventListener("mouseover", this.handleMouseOver);
     this.dom.addEventListener("mouseleave", this.handleMouseLeave);
   }
 
-  private handleMouseMove = (event: MouseEvent) => {
+  private handleMouseOver = (event: MouseEvent) => {
     if (this.dragState) return;
 
-    const hovered = findHoveredCell(this.view, event.clientX, event.clientY);
+    const target = event.target as Element;
+    const cellEl = target.closest("td, th") as HTMLTableCellElement | null;
+    if (!cellEl || !this.table.contains(cellEl)) return;
+
+    const rect = cellEl.getBoundingClientRect();
+    const hovered = findHoveredCell(
+      this.view,
+      rect.left + rect.width / 2,
+      rect.top + rect.height / 2,
+    );
     if (!hovered) return;
 
     this.hovered = hovered;
@@ -345,7 +354,7 @@ export class GripTableView extends TableView {
   }
 
   destroy() {
-    this.dom.removeEventListener("mousemove", this.handleMouseMove);
+    this.dom.removeEventListener("mouseover", this.handleMouseOver);
     this.dom.removeEventListener("mouseleave", this.handleMouseLeave);
     document.removeEventListener("mousemove", this.handleDragMove);
     document.removeEventListener("mouseup", this.handleDragEnd);
