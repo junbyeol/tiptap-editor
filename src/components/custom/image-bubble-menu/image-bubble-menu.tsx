@@ -11,9 +11,9 @@ import { Button } from "@/components/tiptap-ui-primitive/button";
 import { ImageAlignLeftIcon } from "@/components/tiptap-icons/image-align-left";
 import { ImageAlignCenterIcon } from "@/components/tiptap-icons/image-align-center";
 import { ImageAlignRightIcon } from "@/components/tiptap-icons/image-align-right";
-import { ImageRatioIcon } from "@/components/tiptap-icons/image-ratio";
 import { ImageCaption } from "@/components/tiptap-icons/image-caption";
 import type { FigureAlign } from "@/tiptap/extensions/FigureKit";
+import { ImageRatioPopover } from "./image-ratio-popover";
 
 export interface ImageBubbleMenuProps {
   editor: Editor;
@@ -62,15 +62,7 @@ export const ImageBubbleMenu = ({ editor }: ImageBubbleMenuProps) => {
     >
       <Toolbar variant="floating">
         <ToolbarGroup>
-          <Button
-            data-style="ghost"
-            tooltip="이미지 비율 조절"
-            // data-active-state={"todo"}
-            // aria-pressed={"todo"}
-            // onClick={() => console.log("todo")}
-          >
-            <ImageRatioIcon className="tiptap-button-icon" />
-          </Button>
+          <ImageRatioPopover editor={editor} />
           <ToolbarSeparator />
           <Button
             data-style="ghost"
