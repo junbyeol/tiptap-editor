@@ -14,7 +14,7 @@ import Subscript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
 import Underline from "@tiptap/extension-underline";
 
-import Blockquote from "@tiptap/extension-blockquote";
+import { BlockquoteKit } from "./BlockquoteKit";
 import { ListKit } from "@tiptap/extension-list";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { all, createLowlight } from "lowlight";
@@ -46,7 +46,7 @@ const RequiredNodes = [Document, Paragraph, Text];
 
 const Nodes = [
   ...RequiredNodes,
-  Blockquote,
+  BlockquoteKit,
   CodeBlockLowlight.configure({
     lowlight,
   }),

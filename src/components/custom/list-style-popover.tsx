@@ -41,7 +41,7 @@ export function ListStylePopover({ editor }: ListStylePopoverProps) {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button data-style="ghost" tooltip="목록">
-          <ListIcon />
+          <ListIcon className="tiptap-button-icon" />
         </Button>
       </PopoverTrigger>
       <PopoverContent align="start">
