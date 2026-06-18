@@ -1,4 +1,5 @@
 import { Node, mergeAttributes, findParentNode } from "@tiptap/core";
+import type { Node as PMNode } from "@tiptap/pm/model";
 import { TextSelection } from "@tiptap/pm/state";
 
 export type FigureAlign = "left" | "center" | "right";
@@ -20,7 +21,7 @@ declare module "@tiptap/core" {
 export const FigureKit = Node.create({
   name: "figure",
   group: "block",
-  content: "image{1,2} figcaption?",
+  content: "image+ figcaption?",
   draggable: true,
 
   addAttributes() {
@@ -40,6 +41,33 @@ export const FigureKit = Node.create({
 
   renderHTML({ HTMLAttributes }) {
     return ["figure", mergeAttributes(HTMLAttributes), 0];
+  },
+
+  addNodeView() {
+    return ({ node }) => {
+      const dom = document.createElement("figure");
+
+      const sync = (n: PMNode) => {
+        dom.setAttribute("data-align", n.attrs.align as string);
+        let count = 0;
+        n.forEach((child) => {
+          if (child.type.name === "image") count++;
+        });
+        dom.dataset.count = String(count);
+      };
+
+      sync(node);
+
+      return {
+        dom,
+        contentDOM: dom,
+        update(updatedNode: PMNode) {
+          if (updatedNode.type.name !== "figure") return false;
+          sync(updatedNode);
+          return true;
+        },
+      };
+    };
   },
 
   addCommands() {
