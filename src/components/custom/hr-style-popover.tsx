@@ -12,6 +12,7 @@ import {
   CardItemGroup,
 } from "@/components/tiptap-ui-primitive/card";
 import type { HrStyle } from "@/tiptap/extensions/HrKit";
+import { SeparatorIcon } from "@/components/tiptap-icons/separator-icon";
 
 const LINE = {
   flex: 1,
@@ -139,7 +140,7 @@ export function HrStylePopover({ editor }: HrStylePopoverProps) {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button data-style="ghost" tooltip="구분선 삽입">
-          <span style={{ fontSize: "1rem", lineHeight: 1 }}>—</span>
+          <SeparatorIcon className="tiptap-button-icon" />
         </Button>
       </PopoverTrigger>
       <PopoverContent align="start">

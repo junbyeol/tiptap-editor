@@ -36,7 +36,7 @@ export function InsertTablePopover({ editor }: InsertTablePopoverProps) {
     <Popover>
       <PopoverTrigger asChild>
         <Button data-style="ghost" tooltip="표 삽입">
-          <TableIcon />
+          <TableIcon className="tiptap-button-icon" />
         </Button>
       </PopoverTrigger>
       <PopoverContent align="start">
