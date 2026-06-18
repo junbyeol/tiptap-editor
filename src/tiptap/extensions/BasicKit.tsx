@@ -26,7 +26,9 @@ import {
 import Heading from "@tiptap/extension-heading";
 import { Hr } from "./HrKit";
 
-import Image from "@tiptap/extension-image";
+import { ImageKit } from "./ImageKit";
+import { FigureKit } from "./FigureKit";
+import { FigcaptionKit } from "./FigcaptionKit";
 import Youtube from "@tiptap/extension-youtube";
 
 import { TextStyleKit } from "@tiptap/extension-text-style";
@@ -53,8 +55,10 @@ const Nodes = [
   ...[Details, DetailsContent, DetailsSummary],
   Heading,
   Hr,
+  FigureKit,
+  FigcaptionKit,
   Youtube,
-  Image.configure({
+  ImageKit.configure({
     allowBase64: true,
     resize: {
       enabled: true,

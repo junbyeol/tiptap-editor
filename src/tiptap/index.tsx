@@ -12,6 +12,7 @@ import {
 import { useFileHandler } from "./hooks/useFileHandler";
 import { FileHandlerContext } from "./contexts/FileHandlerContext";
 import { TableBubbleMenu } from "@/components/custom/table-bubble-menu/table-bubble-menu";
+import { ImageBubbleMenu } from "@/components/custom/image-bubble-menu";
 
 export interface TiptapProps {
   /**
@@ -137,6 +138,7 @@ const TiptapEditor = ({
           <MenuBar editor={editor} />
           <EditorContent editor={editor} />
           {editor && <TableBubbleMenu editor={editor} />}
+          {editor && <ImageBubbleMenu editor={editor} />}
         </FileHandlerContext.Provider>
       </EditorContext.Provider>
     </TiptapWrapper>

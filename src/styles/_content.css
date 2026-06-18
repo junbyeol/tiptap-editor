@@ -264,6 +264,66 @@
       }
     }
 
+    /* Figure & Figcaption */
+    figure {
+      margin: 1.5rem 0;
+
+      &[data-align="left"] {
+        float: left;
+        margin-right: 1.5rem;
+        margin-bottom: 0.5rem;
+        margin-left: 0;
+      }
+
+      &[data-align="right"] {
+        float: right;
+        margin-left: 1.5rem;
+        margin-bottom: 0.5rem;
+        margin-right: 0;
+      }
+
+      /*
+       * ResizableNodeView: figure > div[data-resize-container](display:flex)
+       *                             > div[data-resize-wrapper](display:block)
+       *                               > img
+       * center 정렬은 flex 컨테이너에 justify-content: center 로 처리.
+       */
+      &[data-align="center"] > div[data-resize-container] {
+        justify-content: center;
+      }
+
+      /* 2-image side-by-side layout */
+      &:has(> div[data-resize-container]:nth-of-type(2)) {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        float: none;
+        margin-left: 0;
+        margin-right: 0;
+
+        > div[data-resize-container] {
+          flex: 1;
+          min-width: 0;
+        }
+
+        > figcaption {
+          flex-basis: 100%;
+        }
+      }
+    }
+
+    figcaption {
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--tt-gray-light-a-600);
+      margin-top: 0.5rem;
+      font-style: italic;
+
+      .dark & {
+        color: var(--tt-gray-dark-a-600);
+      }
+    }
+
     /* Table-specific styling */
     table {
       border-collapse: collapse;
