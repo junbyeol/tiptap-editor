@@ -24,7 +24,7 @@ import {
   DetailsSummary,
 } from "@tiptap/extension-details";
 import Heading from "@tiptap/extension-heading";
-import HorizontalRule from "@tiptap/extension-horizontal-rule";
+import { Hr } from "./HrKit";
 
 import Image from "@tiptap/extension-image";
 import Youtube from "@tiptap/extension-youtube";
@@ -52,7 +52,7 @@ const Nodes = [
   }),
   ...[Details, DetailsContent, DetailsSummary],
   Heading,
-  HorizontalRule,
+  Hr,
   Youtube,
   Image.configure({
     allowBase64: true,
