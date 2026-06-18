@@ -269,3 +269,47 @@
   width: 100%;
   justify-content: flex-start;
 }
+
+/* ── Insert table popover ─────────────────────────────────────────────────── */
+
+.tiptap-table-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 22px);
+  gap: 2px;
+  margin: 6px;
+}
+
+.tiptap-table-picker-cell {
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--tt-gray-light-a-300);
+  border-radius: 2px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: border-color 0.05s ease, background-color 0.05s ease;
+
+  &.is-selected {
+    border-color: var(--tt-gray-light-a-900);
+    background-color: var(--tt-gray-light-a-100);
+  }
+
+  .dark & {
+    border-color: var(--tt-gray-dark-a-300);
+
+    &.is-selected {
+      border-color: var(--tt-gray-dark-a-900);
+      background-color: var(--tt-gray-dark-a-100);
+    }
+  }
+}
+
+.tiptap-table-picker-label {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--tt-gray-light-a-700);
+
+  .dark & {
+    color: var(--tt-gray-dark-a-700);
+  }
+}

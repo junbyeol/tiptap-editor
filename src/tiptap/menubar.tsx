@@ -9,8 +9,7 @@ import { TextStyleDropdownMenu } from "@/components/custom/text-style-dropdown-m
 import { TextAlignButton } from "@/components/tiptap-ui/text-align-button";
 import { MarkButton } from "@/components/tiptap-ui/mark-button";
 import { UploadableDropdownMenu } from "@/components/custom/uploadable-dropdown-menu/uploadable-dropdown-menu";
-import { Button } from "@/components/tiptap-ui-primitive/button";
-import { TableIcon } from "@/components/tiptap-icons/table-icon";
+import { InsertTablePopover } from "@/components/custom/insert-table-popover";
 
 export default function menubar({ editor }: { editor: Editor }) {
   return (
@@ -33,19 +32,7 @@ export default function menubar({ editor }: { editor: Editor }) {
         <TextAlignButton align="right" />
         <TextAlignButton align="justify" />
         <ToolbarSeparator />
-        <Button
-          data-style="ghost"
-          tooltip="표 삽입"
-          onClick={() =>
-            editor
-              .chain()
-              .focus()
-              .insertTable({ rows: 3, cols: 3, withHeaderRow: false })
-              .run()
-          }
-        >
-          <TableIcon />
-        </Button>
+        <InsertTablePopover editor={editor} />
       </ToolbarGroup>
     </Toolbar>
   );
