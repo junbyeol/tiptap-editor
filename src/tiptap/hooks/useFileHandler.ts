@@ -79,7 +79,11 @@ export const useFileHandler = ({
       if (isImageFile(file)) {
         currentEditor
           .chain()
-          .insertContentAt(pos, { type: "image", attrs: { src: url } })
+          .insertContentAt(pos, {
+            type: "figure",
+            attrs: { align: "center" },
+            content: [{ type: "image", attrs: { src: url } }],
+          })
           .focus()
           .run();
         onUploadSuccess?.(file);
