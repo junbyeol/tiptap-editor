@@ -32,6 +32,7 @@ import { FigcaptionKit } from "./FigcaptionKit";
 import Youtube from "@tiptap/extension-youtube";
 
 import { TextStyleKit } from "@tiptap/extension-text-style";
+import { FontSizeKit } from "./FontSizeKit";
 import { Dropcursor } from "@tiptap/extension-dropcursor";
 import { Gapcursor } from "@tiptap/extension-gapcursor";
 import { Placeholder } from "@tiptap/extensions/placeholder";
@@ -85,6 +86,7 @@ const Marks = [
 const Functionalities = [
   ListKit,
   TextStyleKit,
+  FontSizeKit,
   Gapcursor,
   Dropcursor,
   FileHandler,
