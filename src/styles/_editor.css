@@ -10,6 +10,7 @@
   min-height: var(--tiptap-min-height, 200px);
   max-height: var(--tiptap-max-height, none);
   overflow-y: auto;
+  text-align: left;
 
   /* ── Image resize ─────────────────────────────────────────────────────── */
 
