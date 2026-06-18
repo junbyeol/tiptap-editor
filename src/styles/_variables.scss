@@ -4,6 +4,8 @@
   ******************/
 
   overflow-wrap: break-word;
+  /* iOS WebKit only honors the -webkit- prefixed form */
+  -webkit-text-size-adjust: none;
   text-size-adjust: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

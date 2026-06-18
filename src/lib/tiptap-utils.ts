@@ -1,5 +1,6 @@
 import type { Node as PMNode } from "@tiptap/pm/model";
 import type { Transaction } from "@tiptap/pm/state";
+import { clsx, type ClassValue } from "clsx";
 import {
   AllSelection,
   NodeSelection,
@@ -43,10 +44,8 @@ export const SR_ONLY = {
   borderWidth: 0,
 } as const;
 
-export function cn(
-  ...classes: (string | boolean | undefined | null)[]
-): string {
-  return classes.filter(Boolean).join(" ");
+export function cn(...inputs: ClassValue[]): string {
+  return clsx(inputs);
 }
 
 /**
@@ -611,6 +610,13 @@ export function getSelectedNodesOfType(
   }
 
   return results;
+}
+
+/**
+ * Clamps a value between min and max bounds
+ */
+export function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(value, max));
 }
 
 export function getSelectedBlockNodes(editor: Editor): PMNode[] {

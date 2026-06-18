@@ -11,7 +11,6 @@ import {
 import { cn, parseShortcutKeys } from "@/lib/tiptap-utils";
 
 import "@/components/tiptap-ui-primitive/button/button-colors.scss";
-import "@/components/tiptap-ui-primitive/button/button-group.scss";
 import "@/components/tiptap-ui-primitive/button/button.scss";
 
 export type ButtonVariant = "ghost" | "primary";
@@ -64,6 +63,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     if (!tooltip || !showTooltip) {
       return (
         <button
+          data-slot="tiptap-button"
           className={cn("tiptap-button", className)}
           ref={ref}
           data-style={variant}
@@ -78,6 +78,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Tooltip delay={200}>
         <TooltipTrigger
+          data-slot="tiptap-button"
           className={cn("tiptap-button", className)}
           ref={ref}
           data-style={variant}
@@ -96,25 +97,5 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = "Button";
-
-export const ButtonGroup = forwardRef<
-  HTMLDivElement,
-  React.ComponentProps<"div"> & {
-    orientation?: "horizontal" | "vertical";
-  }
->(({ className, children, orientation = "vertical", ...props }, ref) => {
-  return (
-    <div
-      ref={ref}
-      className={cn("tiptap-button-group", className)}
-      data-orientation={orientation}
-      role="group"
-      {...props}
-    >
-      {children}
-    </div>
-  );
-});
-ButtonGroup.displayName = "ButtonGroup";
 
 export default Button;
