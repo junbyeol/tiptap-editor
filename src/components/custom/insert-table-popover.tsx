@@ -17,7 +17,6 @@ interface InsertTablePopoverProps {
 }
 
 export function InsertTablePopover({ editor }: InsertTablePopoverProps) {
-  const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState<{ row: number; col: number } | null>(
     null,
   );
@@ -28,14 +27,13 @@ export function InsertTablePopover({ editor }: InsertTablePopoverProps) {
       .focus()
       .insertTable({ rows: row, cols: col, withHeaderRow: false })
       .run();
-    setOpen(false);
   };
 
   const hovRow = hovered?.row ?? 0;
   const hovCol = hovered?.col ?? 0;
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover>
       <PopoverTrigger asChild>
         <Button data-style="ghost" tooltip="표 삽입">
           <TableIcon />
