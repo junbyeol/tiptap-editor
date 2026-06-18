@@ -10,6 +10,7 @@ import { TextAlignButton } from "@/components/tiptap-ui/text-align-button";
 import { MarkButton } from "@/components/tiptap-ui/mark-button";
 import { UploadableDropdownMenu } from "@/components/custom/uploadable-dropdown-menu/uploadable-dropdown-menu";
 import { InsertTablePopover } from "@/components/custom/insert-table-popover";
+import { ListStylePopover } from "@/components/custom/list-style-popover";
 
 export default function menubar({ editor }: { editor: Editor }) {
   return (
@@ -33,6 +34,7 @@ export default function menubar({ editor }: { editor: Editor }) {
         <TextAlignButton align="justify" />
         <ToolbarSeparator />
         <InsertTablePopover editor={editor} />
+        <ListStylePopover editor={editor} />
       </ToolbarGroup>
     </Toolbar>
   );
