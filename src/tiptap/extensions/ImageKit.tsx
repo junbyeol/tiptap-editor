@@ -15,10 +15,11 @@ export const ImageKit = Image.extend({
       let prevWidth = args.node.attrs.width;
       let prevHeight = args.node.attrs.height;
 
-      const originalUpdate = nodeView.update.bind(nodeView);
+      const originalUpdate = nodeView.update?.bind(nodeView);
 
       nodeView.update = (node, decorations, innerDecorations) => {
-        const result = originalUpdate(node, decorations, innerDecorations);
+        const result =
+          originalUpdate?.(node, decorations, innerDecorations) ?? true;
         if (result !== false) {
           const { width, height } = node.attrs;
           if (width !== prevWidth || height !== prevHeight) {

@@ -15,7 +15,8 @@ import { useHeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-
 
 // --- UI Primitives ---
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button";
-import { Button, ButtonGroup } from "@/components/tiptap-ui-primitive/button";
+import { Button } from "@/components/tiptap-ui-primitive/button";
+import { ButtonGroup } from "@/components/tiptap-ui-primitive/button-group";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
