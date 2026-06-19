@@ -3,7 +3,7 @@ import { Extension } from "@tiptap/core";
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     fontSize: {
-      setFontSize: (size: number) => ReturnType;
+      setFontSize: (size: string) => ReturnType;
       unsetFontSize: () => ReturnType;
     };
   }
