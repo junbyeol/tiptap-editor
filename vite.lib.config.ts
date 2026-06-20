@@ -47,5 +47,6 @@ export default defineConfig({
     emptyOutDir: true,
     // 소비자가 dist/style.css를 직접 import 할 수 있도록 CSS를 하나로 묶음
     cssCodeSplit: false,
+    sourcemap: true,
   },
 });
