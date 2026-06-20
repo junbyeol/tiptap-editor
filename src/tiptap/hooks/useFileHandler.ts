@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useEditor } from "@tiptap/react";
 import { type FileAttachmentAttributes } from "../extensions";
 import type { FileHandlerOptions } from "@tiptap/extension-file-handler";
@@ -48,23 +48,41 @@ export const useFileHandler = ({
   onUploadError,
   allowNonImageFile = false,
 }: UseFileHandlerAttributes) => {
+  const uploadFileRef = useRef(uploadFile);
+  const onUploadStartRef = useRef(onUploadStart);
+  const onUploadSuccessRef = useRef(onUploadSuccess);
+  const onUploadErrorRef = useRef(onUploadError);
+
+  useEffect(() => {
+    uploadFileRef.current = uploadFile;
+  }, [uploadFile]);
+  useEffect(() => {
+    onUploadStartRef.current = onUploadStart;
+  }, [onUploadStart]);
+  useEffect(() => {
+    onUploadSuccessRef.current = onUploadSuccess;
+  }, [onUploadSuccess]);
+  useEffect(() => {
+    onUploadErrorRef.current = onUploadError;
+  }, [onUploadError]);
+
   const resolveFileUrl = useCallback(
     async (file: File): Promise<string | null> => {
-      onUploadStart?.(file);
+      onUploadStartRef.current?.(file);
       try {
-        const url = uploadFile
-          ? await uploadFile(file)
+        const url = uploadFileRef.current
+          ? await uploadFileRef.current(file)
           : await readFileAsDataUrl(file);
         return url;
       } catch (err) {
-        onUploadError?.(
+        onUploadErrorRef.current?.(
           err instanceof Error ? err : new Error("Upload failed"),
           file,
         );
         return null;
       }
     },
-    [uploadFile, onUploadStart, onUploadError],
+    [],
   );
 
   const insertFile = useCallback(
@@ -86,7 +104,7 @@ export const useFileHandler = ({
           })
           .focus()
           .run();
-        onUploadSuccess?.(file);
+        onUploadSuccessRef.current?.(file);
         return;
       }
 
@@ -103,9 +121,9 @@ export const useFileHandler = ({
         })
         .focus()
         .run();
-      onUploadSuccess?.(file);
+      onUploadSuccessRef.current?.(file);
     },
-    [onUploadSuccess],
+    [],
   );
 
   const handleDrop = useCallback<NonNullable<FileHandlerOptions["onDrop"]>>(
@@ -145,7 +163,7 @@ export const useFileHandler = ({
       const imgTags = [...doc.querySelectorAll("img")];
 
       if (imgTags.length === 0) {
-        onUploadError?.(
+        onUploadErrorRef.current?.(
           new Error("외부에서 복사해온 파일을 바로 붙여넣기할 수 없습니다"),
         );
         return;
@@ -158,11 +176,11 @@ export const useFileHandler = ({
           const file = imageFiles[i];
           if (file) {
             const url = await resolveFileUrl(file);
-            if (!url) {
+            if (url) {
+              img.src = url;
+            } else {
               img.remove();
-              return;
             }
-            img.src = url;
           } else {
             img.remove();
           }
@@ -171,7 +189,7 @@ export const useFileHandler = ({
 
       currentEditor.commands.insertContent(doc.body.innerHTML);
     },
-    [resolveFileUrl, insertFile, onUploadError],
+    [resolveFileUrl, insertFile],
   );
 
   const allowedMimeTypes = useMemo(

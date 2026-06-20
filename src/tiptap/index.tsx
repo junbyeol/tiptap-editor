@@ -1,7 +1,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import { TiptapEditorContext } from "@/contexts/TiptapEditorContext";
 import MenuBar from "./menubar";
-import { useMemo } from "react";
+import { useMemo, useRef, useEffect } from "react";
 import type { ComponentType } from "react";
 import FileHandler from "@tiptap/extension-file-handler";
 import {
@@ -93,42 +93,44 @@ const TiptapEditor = ({
     [resolveFileUrl, insertFile],
   );
 
-  const editor = useEditor(
-    {
-      extensions: [
-        BasicKit,
-        TableKit,
-        FileAttachment.configure({
-          ...(FileAttachmentComponent && {
-            component: FileAttachmentComponent,
-          }),
+  const onChangeRef = useRef(onChange);
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
+
+  const editor = useEditor({
+    extensions: [
+      BasicKit,
+      TableKit,
+      FileAttachment.configure({
+        ...(FileAttachmentComponent && {
+          component: FileAttachmentComponent,
         }),
-        FileHandler.configure({
-          allowedMimeTypes,
-          onDrop: handleDrop,
-          onPaste: handlePaste,
-        }),
-      ],
-      content: defaultValue,
-      onUpdate: ({ editor: currentEditor }) => {
-        onChange?.(currentEditor.getHTML());
+      }),
+      FileHandler.configure({
+        allowedMimeTypes,
+        onDrop: handleDrop,
+        onPaste: handlePaste,
+      }),
+    ],
+    content: defaultValue,
+    onUpdate: ({ editor: currentEditor }) => {
+      onChangeRef.current?.(currentEditor.getHTML());
+    },
+    editorProps: {
+      attributes: {
+        class: "tiptap tiptap-typography",
       },
-      editorProps: {
-        attributes: {
-          class: "tiptap tiptap-typography",
-        },
-        transformPastedHTML: (html) => {
-          const doc = new DOMParser().parseFromString(html, "text/html");
-          doc.querySelectorAll("img").forEach((img) => {
-            console.log(img);
-            img.remove();
-          });
-          return doc.body.innerHTML;
-        },
+      transformPastedHTML: (html) => {
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        doc.querySelectorAll("img").forEach((img) => {
+          console.log(img);
+          img.remove();
+        });
+        return doc.body.innerHTML;
       },
     },
-    [onChange],
-  );
+  });
 
   return (
     <TiptapWrapper minHeight={minHeight} maxHeight={maxHeight}>
