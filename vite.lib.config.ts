@@ -27,14 +27,32 @@ export default defineConfig({
       fileName: (format) => `index.${format === "es" ? "mjs" : "cjs"}`,
     },
     rollupOptions: {
-      // react, react-dom만 외부화하여 소비자 앱의 React 인스턴스와 공유
-      // @tiptap/* 등 나머지 패키지는 번들에 포함
-      external: ["react", "react-dom", "react/jsx-runtime"],
+      external: (id) => {
+        const packages = [
+          "react",
+          "react-dom",
+          "@tiptap/core",
+          "@tiptap/pm",
+          "@tiptap/react",
+        ];
+        const prefixes = [
+          "react/",
+          "react-dom/",
+          "@tiptap/core/",
+          "@tiptap/pm/",
+          "@tiptap/react/",
+          "prosemirror-",
+        ];
+        return packages.includes(id) || prefixes.some((p) => id.startsWith(p));
+      },
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
           "react/jsx-runtime": "ReactJSXRuntime",
+          "@tiptap/core": "TiptapCore",
+          "@tiptap/pm": "TiptapPm",
+          "@tiptap/react": "TiptapReact",
         },
         assetFileNames: (assetInfo) => {
           if (assetInfo.names?.includes("tiptap-editor.css"))

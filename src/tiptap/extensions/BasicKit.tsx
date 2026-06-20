@@ -17,7 +17,7 @@ import Underline from "@tiptap/extension-underline";
 import { BlockquoteKit } from "./BlockquoteKit";
 import { ListKit } from "@tiptap/extension-list";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import { all, createLowlight } from "lowlight";
+import { common, createLowlight } from "lowlight";
 import {
   Details,
   DetailsContent,
@@ -43,7 +43,7 @@ import { UndoRedo } from "@tiptap/extensions/undo-redo";
 
 import FileHandler from "@tiptap/extension-file-handler";
 
-const lowlight = createLowlight(all);
+const lowlight = createLowlight(common);
 
 const RequiredNodes = [Document, Paragraph, Text];
 
