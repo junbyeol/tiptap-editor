@@ -74,7 +74,7 @@ export const FontSizeDropdownMenu = forwardRef<
         if (currentSize === size) {
           editor.chain().focus().unsetFontSize().run();
         } else {
-          editor.chain().focus().setFontSize(`${size}px`).run();
+          editor.chain().focus().setFontSize(String(size)).run();
         }
       },
       [editor, currentSize],
