@@ -109,7 +109,7 @@ export const TextStyleDropdownMenu = forwardRef<
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="start" portal={portal}>
-          <Card className="tiptap-typography">
+          <Card className="tiptap">
             <CardBody>
               <ButtonGroup>
                 {options.map((option) => (

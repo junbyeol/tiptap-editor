@@ -21,6 +21,13 @@ body {
   }
 }
 
+/* ─── 데모 전용 ──────────────────────────────────────── */
+.tiptap-wrapper {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+}
+
 /* ─── 데모 전용 (.demo-ui 안에서만 적용) ────────────── */
 /* 에디터는 .demo-ui 밖에 위치하므로 아래 스타일의 영향을 받지 않음 */
 .demo-ui {

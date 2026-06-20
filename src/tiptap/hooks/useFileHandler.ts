@@ -139,55 +139,17 @@ export const useFileHandler = ({
 
   const handlePaste = useCallback<NonNullable<FileHandlerOptions["onPaste"]>>(
     async (currentEditor, files, htmlContent) => {
-      console.log(
-        "[FileHandler onPaste] files:",
-        files,
-        "htmlContent:",
-        htmlContent,
-      );
-      if (!htmlContent) {
-        for (const file of files.reverse()) {
-          const url = await resolveFileUrl(file);
-          if (!url) return;
-          insertFile(
-            currentEditor,
-            file,
-            url,
-            currentEditor.state.selection.anchor,
-          );
-        }
-        return;
+      if (htmlContent) return;
+
+      const pos = currentEditor.state.selection.anchor;
+      const results: Array<{ file: File; url: string | null }> = [];
+      for (const file of files) {
+        results.push({ file, url: await resolveFileUrl(file) });
       }
-
-      const doc = new DOMParser().parseFromString(htmlContent, "text/html");
-      const imgTags = [...doc.querySelectorAll("img")];
-
-      if (imgTags.length === 0) {
-        onUploadErrorRef.current?.(
-          new Error("외부에서 복사해온 파일을 바로 붙여넣기할 수 없습니다"),
-        );
-        return;
+      for (const { file, url } of [...results].reverse()) {
+        if (!url) continue;
+        insertFile(currentEditor, file, url, pos);
       }
-
-      const imageFiles = files.filter((f) => f.type.startsWith("image/"));
-
-      await Promise.all(
-        imgTags.map(async (img, i) => {
-          const file = imageFiles[i];
-          if (file) {
-            const url = await resolveFileUrl(file);
-            if (url) {
-              img.src = url;
-            } else {
-              img.remove();
-            }
-          } else {
-            img.remove();
-          }
-        }),
-      );
-
-      currentEditor.commands.insertContent(doc.body.innerHTML);
     },
     [resolveFileUrl, insertFile],
   );

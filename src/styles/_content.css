@@ -1,10 +1,11 @@
-/*
- * :is() 안의 가장 높은 specificity(0,2,0)가 전체에 적용된다.
- * - 에디터(.tiptap.tiptap-typography): 두 클래스가 같은 요소에 있어 (0,2,0) 매칭
- * - 드롭다운 미리보기(.tiptap-typography 단독): (0,1,0) 매칭이지만 :is()가 (0,2,0)을 부여
- * 결과적으로 .tiptap h1 (0,1,1)보다 항상 높은 (0,2,1) specificity가 보장된다.
- */
-:is(.tiptap-typography, .tiptap.tiptap-typography) {
+/* === 에디터 + 읽기 전용 공통 콘텐츠 스타일 === */
+.tiptap {
+  --gray-1: var(--tt-gray-light-50);
+  --gray-2: var(--tt-gray-light-a-200);
+  --gray-3: var(--tt-gray-light-a-300);
+  --purple: var(--tt-brand-color-500);
+  --purple-light: var(--tt-brand-color-100);
+
   color: var(--tt-gray-light-a-900);
   line-height: 1.6;
 
@@ -12,6 +13,23 @@
     color: var(--tt-gray-dark-a-900);
   }
 
+  :first-child {
+    margin-top: 0;
+  }
+
+  /* List styles */
+  ul,
+  ol {
+    padding: 0 1rem;
+    margin: 1.25rem 1rem 1.25rem 0.4rem;
+
+    li p {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
+  }
+
+  /* Headings */
   h1,
   h2,
   h3,
@@ -19,6 +37,14 @@
   h5,
   h6 {
     line-height: 1.1;
+    margin-top: 2.5rem;
+    text-wrap: pretty;
+  }
+
+  h1,
+  h2 {
+    margin-top: 3.5rem;
+    margin-bottom: 1.5rem;
   }
 
   h1 {
@@ -51,412 +77,374 @@
   p[data-size="large"] {
     font-size: 1.125rem;
   }
+
+  /* Code and preformatted text styles */
+  code {
+    background-color: var(--purple-light);
+    border-radius: 0.4rem;
+    color: var(--black);
+    font-size: 0.85rem;
+    padding: 0.25em 0.3em;
+  }
+
+  pre {
+    background: var(--black);
+    border-radius: 0.5rem;
+    color: var(--white);
+    font-family: "JetBrainsMono", monospace;
+    margin: 1.5rem 0;
+    padding: 0.75rem 1rem;
+
+    code {
+      background: none;
+      color: inherit;
+      font-size: 0.8rem;
+      padding: 0;
+    }
+  }
+
+  blockquote {
+    border-left: 3px solid var(--gray-3);
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+  }
+
+  blockquote[data-style="bar"] {
+    border-left: 3px solid var(--gray-3);
+    padding-left: 1rem;
+  }
+
+  blockquote[data-style="quote"] {
+    border-left: none;
+    padding: 3rem 1.5rem 1rem;
+    text-align: center;
+    font-style: italic;
+    position: relative;
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0.75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1.5rem;
+      height: 1.5rem;
+      background-color: var(--tt-gray-light-a-400);
+      mask-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='black' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.58341 17.3211C3.55316 16.2274 3 15 3 13.0103C3 9.51086 5.45651 6.37366 9.03059 4.82318L9.92328 6.20079C6.58804 8.00539 5.93618 10.346 5.67564 11.822C6.21263 11.5443 6.91558 11.4466 7.60471 11.5105C9.40908 11.6778 10.8312 13.159 10.8312 15C10.8312 16.933 9.26416 18.5 7.33116 18.5C6.2581 18.5 5.23196 18.0095 4.58341 17.3211ZM14.5834 17.3211C13.5532 16.2274 13 15 13 13.0103C13 9.51086 15.4565 6.37366 19.0306 4.82318L19.9233 6.20079C16.588 8.00539 15.9362 10.346 15.6756 11.822C16.2126 11.5443 16.9156 11.4466 17.6047 11.5105C19.4091 11.6778 20.8312 13.159 20.8312 15C20.8312 16.933 19.2642 18.5 17.3312 18.5C16.2581 18.5 15.232 18.0095 14.5834 17.3211Z'/%3E%3C/svg%3E");
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+    }
+  }
+
+  blockquote[data-style="box"] {
+    border-left: none;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--gray-3);
+    border-radius: 4px;
+    background-color: var(--tt-gray-light-a-100);
+
+    > p {
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--gray-2);
+    margin: 2rem 0;
+  }
+
+  hr[data-style="thin"] {
+    border-top: 1px solid var(--tt-gray-light-a-700);
+  }
+
+  hr[data-style="thick"] {
+    border-top: 3px solid var(--tt-gray-light-a-700);
+
+    .dark & {
+      border-top-color: var(--tt-gray-dark-a-700);
+    }
+  }
+
+  hr[data-style="dashed"] {
+    border-top: 1px dashed var(--tt-gray-light-a-700);
+  }
+
+  hr[data-style="short"] {
+    width: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: 3px solid var(--tt-gray-light-a-700);
+  }
+
+  hr[data-style="dots"] {
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::before {
+      content: "···";
+      letter-spacing: 0.4em;
+      font-size: 2.4rem;
+      color: var(--tt-gray-light-a-700);
+    }
+  }
+
+  hr[data-style="diamond"] {
+    position: relative;
+    border: none;
+    border-top: 1px solid var(--tt-gray-light-a-700);
+    overflow: visible;
+
+    &::before {
+      content: "◆";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: canvas;
+      padding: 0 8px;
+      font-size: 0.6rem;
+      color: var(--tt-gray-light-a-700);
+      line-height: 1;
+    }
+  }
+
+  hr[data-style="circle"] {
+    position: relative;
+    border: none;
+    border-top: 1px solid var(--tt-gray-light-a-700);
+    overflow: visible;
+
+    &::before {
+      content: "○";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: canvas;
+      padding: 0 8px;
+      font-size: 0.8rem;
+      color: var(--tt-gray-light-a-700);
+      line-height: 1;
+    }
+  }
+
+  /* Figure & Figcaption */
+  figure {
+    margin: 1.5rem 0;
+
+    /*
+     * 다중 이미지 그리드 레이아웃 (data-count >= 2)
+     * 6-column grid 기반: 2-image row = span 3, 3-image row = span 2
+     * ResizableNodeView의 인라인 width/height는 !important 로 덮어씀.
+     */
+    &[data-count]:not([data-count="1"]) {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+      float: none;
+      margin-left: 0;
+      margin-right: 0;
+
+      > div[data-resize-container] {
+        height: 240px;
+        overflow: hidden;
+
+        > div[data-resize-wrapper] {
+          width: 100% !important;
+          height: 100% !important;
+        }
+
+        img {
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: cover;
+        }
+      }
+
+      > figcaption {
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* n=2: [2] */
+    &[data-count="2"] > div[data-resize-container] { grid-column: span 3; }
+
+    /* n=3: [3] */
+    &[data-count="3"] > div[data-resize-container] { grid-column: span 2; }
+
+    /* n=4: [2,2] */
+    &[data-count="4"] > div[data-resize-container] { grid-column: span 3; }
+
+    /* n=5: [3,2] — 1-3: span 2, 4-5: span 3 */
+    &[data-count="5"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="5"] > div[data-resize-container]:nth-child(-n+3) { grid-column: span 2; }
+
+    /* n=6: [2,2,2] */
+    &[data-count="6"] > div[data-resize-container] { grid-column: span 3; }
+
+    /* n=7: [2,3,2] — 3-5: span 2, 나머지 span 3 */
+    &[data-count="7"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="7"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
+
+    /* n=8: [2,3,3] — 1-2: span 3, 3-8: span 2 */
+    &[data-count="8"] > div[data-resize-container] { grid-column: span 2; }
+    &[data-count="8"] > div[data-resize-container]:nth-child(-n+2) { grid-column: span 3; }
+
+    /* n=9: [2,3,2,2] — 3-5: span 2, 나머지 span 3 */
+    &[data-count="9"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="9"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
+
+    /* n=10: [2,3,2,3] — 3-5: span 2, 8-10: span 2, 나머지 span 3 */
+    &[data-count="10"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="10"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
+    &[data-count="10"] > div[data-resize-container]:nth-child(n+8) { grid-column: span 2; }
+
+    /* n=11: [2,3,2,2,2] — 3-5: span 2, 나머지 span 3 */
+    &[data-count="11"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="11"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
+
+    /* n=12: [2,3,2,2,3] — 3-5: span 2, 10-12: span 2, 나머지 span 3 */
+    &[data-count="12"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="12"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
+    &[data-count="12"] > div[data-resize-container]:nth-child(n+10) { grid-column: span 2; }
+
+    /* n=13: [2,3,2,2,2,2] — 3-5: span 2, 나머지 span 3 */
+    &[data-count="13"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="13"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
+
+    /* n=14: [2,3,2,2,2,3] — 3-5: span 2, 12-14: span 2, 나머지 span 3 */
+    &[data-count="14"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="14"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
+    &[data-count="14"] > div[data-resize-container]:nth-child(n+12) { grid-column: span 2; }
+
+    /* n=15: [2,3,2,2,2,2,2] — 3-5: span 2, 나머지 span 3 */
+    &[data-count="15"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="15"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
+
+    /* n=16: [2,3,2,2,2,2,3] — 3-5: span 2, 14-16: span 2, 나머지 span 3 */
+    &[data-count="16"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="16"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
+    &[data-count="16"] > div[data-resize-container]:nth-child(n+14) { grid-column: span 2; }
+
+    /* n=17: [2,3,2,2,2,2,2,2] — 3-5: span 2, 나머지 span 3 */
+    &[data-count="17"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="17"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
+
+    /* n=18: [2,3,2,2,2,2,2,3] — 3-5: span 2, 16-18: span 2, 나머지 span 3 */
+    &[data-count="18"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="18"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
+    &[data-count="18"] > div[data-resize-container]:nth-child(n+16) { grid-column: span 2; }
+
+    /* n=19: [2,3,2,2,2,2,2,2,2] — 3-5: span 2, 나머지 span 3 */
+    &[data-count="19"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="19"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
+
+    /* n=20: [2,3,2,2,2,2,2,2,3] — 3-5: span 2, 18-20: span 2, 나머지 span 3 */
+    &[data-count="20"] > div[data-resize-container] { grid-column: span 3; }
+    &[data-count="20"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
+    &[data-count="20"] > div[data-resize-container]:nth-child(n+18) { grid-column: span 2; }
+  }
+
+  figcaption {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--tt-gray-light-a-600);
+    margin-top: 0.5rem;
+    font-style: italic;
+
+    .dark & {
+      color: var(--tt-gray-dark-a-600);
+    }
+  }
+
+  /* Table-specific styling */
+  table {
+    border-collapse: collapse;
+    margin: 0;
+    overflow: hidden;
+    table-layout: fixed;
+    width: 100%;
+
+    td,
+    th {
+      border: 1px solid var(--tt-gray-light-a-400);
+      box-sizing: border-box;
+      min-width: 1em;
+      padding: 6px 8px;
+      position: relative;
+      vertical-align: top;
+
+      > * {
+        margin-bottom: 0;
+      }
+    }
+
+    th {
+      background-color: var(--gray-1);
+      font-weight: bold;
+      text-align: left;
+    }
+  }
+
+  /* File attachment node */
+  .file-attachment {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: var(--black);
+    border-radius: 9999px;
+    padding: 0.75rem 1.25rem;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .file-attachment__icon {
+    flex-shrink: 0;
+    color: var(--white);
+  }
+
+  .file-attachment__name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--white);
+  }
 }
 
-/* Basic editor styles */
-.tiptap {
-    --gray-1: var(--tt-gray-light-50);
-    --gray-2: var(--tt-gray-light-a-200);
-    --gray-3: var(--tt-gray-light-a-300);
+/* === 에디터 전용 스타일 === */
+.tiptap-editor {
+  p:empty {
+    min-height: 1lh;
+  }
 
-    --purple: var(--tt-brand-color-500);
-    --purple-light: var(--tt-brand-color-100);
-
-    :first-child {
-      margin-top: 0;
+  /*
+   * ResizableNodeView: figure > div[data-resize-container](display:flex)
+   *                             > div[data-resize-wrapper](display:block)
+   *                               > img
+   * figure는 항상 에디터 너비 전체를 차지하며,
+   * 정렬은 flex 컨테이너의 justify-content로 처리.
+   */
+  figure {
+    &[data-align="left"] > div[data-resize-container] {
+      justify-content: flex-start;
     }
 
-    p:empty {
-      min-height: 1lh;
+    &[data-align="right"] > div[data-resize-container] {
+      justify-content: flex-end;
     }
 
-    /* List styles */
-    ul,
-    ol {
-      padding: 0 1rem;
-      margin: 1.25rem 1rem 1.25rem 0.4rem;
-
-      li p {
-        margin-top: 0.25em;
-        margin-bottom: 0.25em;
-      }
-    }
-
-    /* Heading layout styles */
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      margin-top: 2.5rem;
-      text-wrap: pretty;
-    }
-
-    h1,
-    h2 {
-      margin-top: 3.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    /* Code and preformatted text styles */
-    code {
-      background-color: var(--purple-light);
-      border-radius: 0.4rem;
-      color: var(--black);
-      font-size: 0.85rem;
-      padding: 0.25em 0.3em;
-    }
-
-    pre {
-      background: var(--black);
-      border-radius: 0.5rem;
-      color: var(--white);
-      font-family: "JetBrainsMono", monospace;
-      margin: 1.5rem 0;
-      padding: 0.75rem 1rem;
-
-      code {
-        background: none;
-        color: inherit;
-        font-size: 0.8rem;
-        padding: 0;
-      }
-    }
-
-    blockquote {
-      border-left: 3px solid var(--gray-3);
-      margin: 1.5rem 0;
-      padding-left: 1rem;
-    }
-
-    blockquote[data-style="bar"] {
-      border-left: 3px solid var(--gray-3);
-      padding-left: 1rem;
-    }
-
-    blockquote[data-style="quote"] {
-      border-left: none;
-      padding: 3rem 1.5rem 1rem;
-      text-align: center;
-      font-style: italic;
-      position: relative;
-
-      &::before {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 0.75rem;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 1.5rem;
-        height: 1.5rem;
-        background-color: var(--tt-gray-light-a-400);
-        mask-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='black' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.58341 17.3211C3.55316 16.2274 3 15 3 13.0103C3 9.51086 5.45651 6.37366 9.03059 4.82318L9.92328 6.20079C6.58804 8.00539 5.93618 10.346 5.67564 11.822C6.21263 11.5443 6.91558 11.4466 7.60471 11.5105C9.40908 11.6778 10.8312 13.159 10.8312 15C10.8312 16.933 9.26416 18.5 7.33116 18.5C6.2581 18.5 5.23196 18.0095 4.58341 17.3211ZM14.5834 17.3211C13.5532 16.2274 13 15 13 13.0103C13 9.51086 15.4565 6.37366 19.0306 4.82318L19.9233 6.20079C16.588 8.00539 15.9362 10.346 15.6756 11.822C16.2126 11.5443 16.9156 11.4466 17.6047 11.5105C19.4091 11.6778 20.8312 13.159 20.8312 15C20.8312 16.933 19.2642 18.5 17.3312 18.5C16.2581 18.5 15.232 18.0095 14.5834 17.3211Z'/%3E%3C/svg%3E");
-        mask-size: contain;
-        mask-repeat: no-repeat;
-        mask-position: center;
-      }
-    }
-
-    blockquote[data-style="box"] {
-      border-left: none;
-      padding: 1rem 1.25rem;
-      border: 1px solid var(--gray-3);
-      border-radius: 4px;
-      background-color: var(--tt-gray-light-a-100);
-
-      > p {
-        padding: 0;
-        margin: 0;
-      }
-    }
-
-    hr {
-      border: none;
-      border-top: 1px solid var(--gray-2);
-      margin: 2rem 0;
-    }
-
-    hr[data-style="thin"] {
-      border-top: 1px solid var(--tt-gray-light-a-700);
-    }
-
-    hr[data-style="thick"] {
-      border-top: 3px solid var(--tt-gray-light-a-700);
-
-      .dark & {
-        border-top-color: var(--tt-gray-dark-a-700);
-      }
-    }
-
-    hr[data-style="dashed"] {
-      border-top: 1px dashed var(--tt-gray-light-a-700);
-    }
-
-    hr[data-style="short"] {
-      width: 10%;
-      margin-left: auto;
-      margin-right: auto;
-      border-top: 3px solid var(--tt-gray-light-a-700);
-    }
-
-    hr[data-style="dots"] {
-      border: none;
-      display: flex;
-      align-items: center;
+    &[data-align="center"] > div[data-resize-container] {
       justify-content: center;
-
-      &::before {
-        content: "···";
-        letter-spacing: 0.4em;
-        font-size: 2.4rem;
-        color: var(--tt-gray-light-a-700);
-      }
     }
+  }
 
-    hr[data-style="diamond"] {
-      position: relative;
-      border: none;
-      border-top: 1px solid var(--tt-gray-light-a-700);
-      overflow: visible;
-
-      &::before {
-        content: "◆";
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        background: canvas;
-        padding: 0 8px;
-        font-size: 0.6rem;
-        color: var(--tt-gray-light-a-700);
-        line-height: 1;
-      }
-    }
-
-    hr[data-style="circle"] {
-      position: relative;
-      border: none;
-      border-top: 1px solid var(--tt-gray-light-a-700);
-      overflow: visible;
-
-      &::before {
-        content: "○";
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        background: canvas;
-        padding: 0 8px;
-        font-size: 0.8rem;
-        color: var(--tt-gray-light-a-700);
-        line-height: 1;
-      }
-    }
-
-    /* Figure & Figcaption */
-    figure {
-      margin: 1.5rem 0;
-
-      /*
-       * ResizableNodeView: figure > div[data-resize-container](display:flex)
-       *                             > div[data-resize-wrapper](display:block)
-       *                               > img
-       * figure는 항상 에디터 너비 전체를 차지하며,
-       * 정렬은 flex 컨테이너의 justify-content로 처리.
-       */
-      &[data-align="left"] > div[data-resize-container] {
-        justify-content: flex-start;
-      }
-
-      &[data-align="right"] > div[data-resize-container] {
-        justify-content: flex-end;
-      }
-
-      &[data-align="center"] > div[data-resize-container] {
-        justify-content: center;
-      }
-
-      /*
-       * 다중 이미지 그리드 레이아웃 (data-count >= 2)
-       * 6-column grid 기반: 2-image row = span 3, 3-image row = span 2
-       * ResizableNodeView의 인라인 width/height는 !important 로 덮어씀.
-       */
-      &[data-count]:not([data-count="1"]) {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 4px;
-        float: none;
-        margin-left: 0;
-        margin-right: 0;
-
-        > div[data-resize-container] {
-          height: 240px;
-          overflow: hidden;
-
-          > div[data-resize-wrapper] {
-            width: 100% !important;
-            height: 100% !important;
-          }
-
-          img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover;
-          }
-        }
-
-        > figcaption {
-          grid-column: 1 / -1;
-        }
-      }
-
-      /* n=2: [2] */
-      &[data-count="2"] > div[data-resize-container] { grid-column: span 3; }
-
-      /* n=3: [3] */
-      &[data-count="3"] > div[data-resize-container] { grid-column: span 2; }
-
-      /* n=4: [2,2] */
-      &[data-count="4"] > div[data-resize-container] { grid-column: span 3; }
-
-      /* n=5: [3,2] — 1-3: span 2, 4-5: span 3 */
-      &[data-count="5"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="5"] > div[data-resize-container]:nth-child(-n+3) { grid-column: span 2; }
-
-      /* n=6: [2,2,2] */
-      &[data-count="6"] > div[data-resize-container] { grid-column: span 3; }
-
-      /* n=7: [2,3,2] — 3-5: span 2, 나머지 span 3 */
-      &[data-count="7"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="7"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
-
-      /* n=8: [2,3,3] — 1-2: span 3, 3-8: span 2 */
-      &[data-count="8"] > div[data-resize-container] { grid-column: span 2; }
-      &[data-count="8"] > div[data-resize-container]:nth-child(-n+2) { grid-column: span 3; }
-
-      /* n=9: [2,3,2,2] — 3-5: span 2, 나머지 span 3 */
-      &[data-count="9"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="9"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
-
-      /* n=10: [2,3,2,3] — 3-5: span 2, 8-10: span 2, 나머지 span 3 */
-      &[data-count="10"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="10"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
-      &[data-count="10"] > div[data-resize-container]:nth-child(n+8) { grid-column: span 2; }
-
-      /* n=11: [2,3,2,2,2] — 3-5: span 2, 나머지 span 3 */
-      &[data-count="11"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="11"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
-
-      /* n=12: [2,3,2,2,3] — 3-5: span 2, 10-12: span 2, 나머지 span 3 */
-      &[data-count="12"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="12"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
-      &[data-count="12"] > div[data-resize-container]:nth-child(n+10) { grid-column: span 2; }
-
-      /* n=13: [2,3,2,2,2,2] — 3-5: span 2, 나머지 span 3 */
-      &[data-count="13"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="13"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
-
-      /* n=14: [2,3,2,2,2,3] — 3-5: span 2, 12-14: span 2, 나머지 span 3 */
-      &[data-count="14"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="14"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
-      &[data-count="14"] > div[data-resize-container]:nth-child(n+12) { grid-column: span 2; }
-
-      /* n=15: [2,3,2,2,2,2,2] — 3-5: span 2, 나머지 span 3 */
-      &[data-count="15"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="15"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
-
-      /* n=16: [2,3,2,2,2,2,3] — 3-5: span 2, 14-16: span 2, 나머지 span 3 */
-      &[data-count="16"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="16"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
-      &[data-count="16"] > div[data-resize-container]:nth-child(n+14) { grid-column: span 2; }
-
-      /* n=17: [2,3,2,2,2,2,2,2] — 3-5: span 2, 나머지 span 3 */
-      &[data-count="17"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="17"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
-
-      /* n=18: [2,3,2,2,2,2,2,3] — 3-5: span 2, 16-18: span 2, 나머지 span 3 */
-      &[data-count="18"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="18"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
-      &[data-count="18"] > div[data-resize-container]:nth-child(n+16) { grid-column: span 2; }
-
-      /* n=19: [2,3,2,2,2,2,2,2,2] — 3-5: span 2, 나머지 span 3 */
-      &[data-count="19"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="19"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
-
-      /* n=20: [2,3,2,2,2,2,2,2,3] — 3-5: span 2, 18-20: span 2, 나머지 span 3 */
-      &[data-count="20"] > div[data-resize-container] { grid-column: span 3; }
-      &[data-count="20"] > div[data-resize-container]:nth-child(n+3):nth-child(-n+5) { grid-column: span 2; }
-      &[data-count="20"] > div[data-resize-container]:nth-child(n+18) { grid-column: span 2; }
-    }
-
-    figcaption {
-      text-align: center;
-      font-size: 0.875rem;
-      color: var(--tt-gray-light-a-600);
-      margin-top: 0.5rem;
-      font-style: italic;
-
-      .dark & {
-        color: var(--tt-gray-dark-a-600);
-      }
-    }
-
-    /* Table-specific styling */
-    table {
-      border-collapse: collapse;
-      margin: 0;
-      overflow: hidden;
-      table-layout: fixed;
-      width: 100%;
-
-      td,
-      th {
-        border: 1px solid var(--tt-gray-light-a-400);
-        box-sizing: border-box;
-        min-width: 1em;
-        padding: 6px 8px;
-        position: relative;
-        vertical-align: top;
-
-        > * {
-          margin-bottom: 0;
-        }
-      }
-
-      th {
-        background-color: var(--gray-1);
-        font-weight: bold;
-        text-align: left;
-      }
-    }
-
-    &.resize-cursor {
-      cursor: ew-resize;
-      cursor: col-resize;
-    }
-
-    /* File attachment node */
-    .file-attachment {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      background-color: var(--black);
-      border-radius: 9999px;
-      padding: 0.75rem 1.25rem;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .file-attachment__icon {
-      flex-shrink: 0;
-      color: var(--white);
-    }
-
-    .file-attachment__name {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--white);
-    }
+  &.resize-cursor {
+    cursor: ew-resize;
+    cursor: col-resize;
+  }
 }

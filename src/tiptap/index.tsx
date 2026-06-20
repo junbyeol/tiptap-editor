@@ -119,14 +119,11 @@ const TiptapEditor = ({
     },
     editorProps: {
       attributes: {
-        class: "tiptap tiptap-typography",
+        class: "tiptap tiptap-editor",
       },
       transformPastedHTML: (html) => {
         const doc = new DOMParser().parseFromString(html, "text/html");
-        doc.querySelectorAll("img").forEach((img) => {
-          console.log(img);
-          img.remove();
-        });
+        doc.querySelectorAll("img").forEach((img) => img.remove());
         return doc.body.innerHTML;
       },
     },
