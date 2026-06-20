@@ -69,6 +69,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           data-style={variant}
           data-size={size}
+          type={type}
           {...props}
         >
           {children}
