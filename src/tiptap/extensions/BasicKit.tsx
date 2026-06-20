@@ -83,7 +83,7 @@ const Marks = [
 
 const Functionalities = [
   ListKit,
-  TextStyleKit,
+  TextStyleKit.configure({ fontSize: false }),
   FontSizeKit,
   Gapcursor,
   Dropcursor,
@@ -98,6 +98,7 @@ const Functionalities = [
 ];
 
 export const BasicKit = Extension.create({
+  name: "basicKit",
   addExtensions() {
     return [...Nodes, ...Marks, ...Functionalities];
   },

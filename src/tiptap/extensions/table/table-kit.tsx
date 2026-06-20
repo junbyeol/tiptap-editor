@@ -33,6 +33,7 @@ export const ExtendedTableCell = TableCell.extend({
 });
 
 export const TableKit = Extension.create({
+  name: "tableKit",
   addExtensions() {
     return [
       Table.configure({
