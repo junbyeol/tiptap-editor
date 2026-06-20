@@ -1,4 +1,5 @@
-import { useEditor, EditorContent, EditorContext } from "@tiptap/react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import { TiptapEditorContext } from "@/contexts/TiptapEditorContext";
 import MenuBar from "./menubar";
 import { useMemo } from "react";
 import type { ComponentType } from "react";
@@ -129,18 +130,16 @@ const TiptapEditor = ({
     [onChange],
   );
 
-  const providerValue = useMemo(() => ({ editor }), [editor]);
-
   return (
     <TiptapWrapper minHeight={minHeight} maxHeight={maxHeight}>
-      <EditorContext.Provider value={providerValue}>
+      <TiptapEditorContext.Provider value={editor}>
         <FileHandlerContext.Provider value={fileHandlerContextValue}>
           <MenuBar editor={editor} />
           <EditorContent editor={editor} />
           {editor && <TableBubbleMenu editor={editor} />}
           {editor && <ImageBubbleMenu editor={editor} />}
         </FileHandlerContext.Provider>
-      </EditorContext.Provider>
+      </TiptapEditorContext.Provider>
     </TiptapWrapper>
   );
 };

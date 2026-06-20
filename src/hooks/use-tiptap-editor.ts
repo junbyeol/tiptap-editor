@@ -1,5 +1,6 @@
-import type { Editor } from "@tiptap/react";
-import { useCurrentEditor, useEditorState } from "@tiptap/react";
+import type { Editor } from "@tiptap/core";
+import { useEditorState } from "@tiptap/react";
+import { useTiptapEditorContext } from "@/contexts/TiptapEditorContext";
 import { useEffect, useState } from "react";
 
 function getActivePageEditor(editor: Editor): Editor | null {
@@ -14,8 +15,8 @@ export function useTiptapEditor(providedEditor?: Editor | null): {
   editorState?: Editor["state"];
   canCommand?: Editor["can"];
 } {
-  const { editor: coreEditor } = useCurrentEditor();
-  const mainEditor = providedEditor ?? coreEditor;
+  const contextEditor = useTiptapEditorContext();
+  const mainEditor = providedEditor ?? contextEditor;
 
   const [storageEditor, setStorageEditor] = useState<Editor | null>(null);
 
