@@ -42,9 +42,9 @@ function App() {
         onUploadStart={(file) =>
           toast(`${file.name} 업로드 시작`, {
             position: "top-center",
-            autoClose: 5000,
+            autoClose: 3000,
             hideProgressBar: false,
-            closeOnClick: false,
+            closeOnClick: true,
             pauseOnHover: true,
             transition: Bounce,
           })
@@ -52,9 +52,9 @@ function App() {
         onUploadSuccess={(file) =>
           toast.success(`${file.name} 업로드 완료`, {
             position: "top-center",
-            autoClose: 5000,
+            autoClose: 3000,
             hideProgressBar: false,
-            closeOnClick: false,
+            closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
@@ -65,9 +65,9 @@ function App() {
         onUploadError={(error) =>
           toast.error(`${error.message} 업로드 실패`, {
             position: "top-center",
-            autoClose: 5000,
+            autoClose: 3000,
             hideProgressBar: false,
-            closeOnClick: false,
+            closeOnClick: true,
             pauseOnHover: true,
           })
         }
