@@ -180,7 +180,7 @@ export function isExtensionAvailable(
   editor: Editor | null,
   extensionNames: string | string[],
 ): boolean {
-  if (!editor) return false;
+  if (!editor || !editor.extensionManager) return false;
 
   const names = Array.isArray(extensionNames)
     ? extensionNames
