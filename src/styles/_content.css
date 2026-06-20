@@ -1,73 +1,60 @@
 /*
- * 레이어 순서 선언: 나중에 선언된 레이어가 specificity와 무관하게 우선 적용됨.
- * typography가 content보다 나중이므로, .tiptap 안에 font-size 규칙이 실수로
- * 추가되더라도 .tiptap-typography가 항상 우선한다.
+ * :is() 안의 가장 높은 specificity(0,2,0)가 전체에 적용된다.
+ * - 에디터(.tiptap.tiptap-typography): 두 클래스가 같은 요소에 있어 (0,2,0) 매칭
+ * - 드롭다운 미리보기(.tiptap-typography 단독): (0,1,0) 매칭이지만 :is()가 (0,2,0)을 부여
+ * 결과적으로 .tiptap h1 (0,1,1)보다 항상 높은 (0,2,1) specificity가 보장된다.
  */
-@layer content, typography;
+:is(.tiptap-typography, .tiptap.tiptap-typography) {
+  color: var(--tt-gray-light-a-900);
+  line-height: 1.6;
 
-@layer typography {
-  /*
-   * 헤딩/본문 크기의 font-size 스케일.
-   * 에디터 본문(.tiptap)과 텍스트 스타일 드롭다운의 미리보기에서 공용으로 사용.
-   */
-  .tiptap-typography {
-    /*
-     * 호스트 앱의 전역 스타일(color, line-height 등)이
-     * 상속되어 들어오지 않도록 기본값을 명시적으로 선언.
-     * font-family는 호스트 앱의 디자인을 따르도록 상속에 맡긴다.
-     */
-    color: var(--tt-gray-light-a-900);
-    line-height: 1.6;
+  .dark & {
+    color: var(--tt-gray-dark-a-900);
+  }
 
-    .dark & {
-      color: var(--tt-gray-dark-a-900);
-    }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.1;
+  }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      line-height: 1.1;
-    }
+  h1 {
+    font-size: 1.625rem;
+  }
 
-    h1 {
-      font-size: 1.625rem;
-    }
+  h2 {
+    font-size: 1.4rem;
+  }
 
-    h2 {
-      font-size: 1.4rem;
-    }
+  h3 {
+    font-size: 1.25rem;
+  }
 
-    h3 {
-      font-size: 1.25rem;
-    }
+  h4,
+  h5,
+  h6 {
+    font-size: 1rem;
+  }
 
-    h4,
-    h5,
-    h6 {
-      font-size: 1rem;
-    }
+  p,
+  p[data-size="normal"] {
+    font-size: 1rem;
+  }
 
-    p,
-    p[data-size="normal"] {
-      font-size: 1rem;
-    }
+  p[data-size="small"] {
+    font-size: 0.875rem;
+  }
 
-    p[data-size="small"] {
-      font-size: 0.875rem;
-    }
-
-    p[data-size="large"] {
-      font-size: 1.125rem;
-    }
+  p[data-size="large"] {
+    font-size: 1.125rem;
   }
 }
 
-@layer content {
-  /* Basic editor styles */
-  .tiptap {
+/* Basic editor styles */
+.tiptap {
     --gray-1: var(--tt-gray-light-50);
     --gray-2: var(--tt-gray-light-a-200);
     --gray-3: var(--tt-gray-light-a-300);
@@ -77,6 +64,10 @@
 
     :first-child {
       margin-top: 0;
+    }
+
+    p:empty {
+      min-height: 1lh;
     }
 
     /* List styles */
@@ -474,5 +465,4 @@
       font-weight: 700;
       color: var(--white);
     }
-  }
 }
