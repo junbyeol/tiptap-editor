@@ -414,6 +414,15 @@
     font-weight: 700;
     color: var(--white);
   }
+
+  .tiptap-button {
+    height: auto;
+    min-height: 2rem;
+
+    h1, h2, h3, h4, h5, h6, p {
+      margin: 0;
+    }
+  }
 }
 
 /* === 에디터 전용 스타일 === */
