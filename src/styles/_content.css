@@ -259,27 +259,21 @@
     figure {
       margin: 1.5rem 0;
 
-      /* 단일 이미지 정렬 */
-      &[data-align="left"] {
-        float: left;
-        margin-right: 1.5rem;
-        margin-bottom: 0.5rem;
-        margin-left: 0;
-      }
-
-      &[data-align="right"] {
-        float: right;
-        margin-left: 1.5rem;
-        margin-bottom: 0.5rem;
-        margin-right: 0;
-      }
-
       /*
        * ResizableNodeView: figure > div[data-resize-container](display:flex)
        *                             > div[data-resize-wrapper](display:block)
        *                               > img
-       * center 정렬은 flex 컨테이너에 justify-content: center 로 처리.
+       * figure는 항상 에디터 너비 전체를 차지하며,
+       * 정렬은 flex 컨테이너의 justify-content로 처리.
        */
+      &[data-align="left"] > div[data-resize-container] {
+        justify-content: flex-start;
+      }
+
+      &[data-align="right"] > div[data-resize-container] {
+        justify-content: flex-end;
+      }
+
       &[data-align="center"] > div[data-resize-container] {
         justify-content: center;
       }

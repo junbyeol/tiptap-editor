@@ -42,6 +42,17 @@
     border-radius: 50%;
 
     cursor: grab;
+
+    /* 이미지가 선택되지 않은 상태에서는 핸들 숨김 */
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* 이미지 노드가 선택됐거나 리사이즈 중일 때 핸들 표시 */
+  .ProseMirror-selectednode [data-resize-handle],
+  [data-resize-state="resizing"] [data-resize-handle] {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   /* 대각선 핸들 (Image.configure의 directions에 코너를 추가할 경우를 대비) */
