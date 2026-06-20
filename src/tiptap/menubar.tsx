@@ -101,9 +101,9 @@ export default function Menubar({ editor }: { editor: Editor }) {
         <ColorTextPopover editor={editor} />
         <ToolbarSeparator />
         <TextAlignButton editor={editor} align="left" />
-        <TextAlignButton align="center" />
-        <TextAlignButton align="right" />
-        <TextAlignButton align="justify" />
+        <TextAlignButton editor={editor} align="center" />
+        <TextAlignButton editor={editor} align="right" />
+        <TextAlignButton editor={editor} align="justify" />
         <ToolbarSeparator />
         <InsertTablePopover editor={editor} />
         <ListStylePopover editor={editor} />

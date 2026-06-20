@@ -41,8 +41,6 @@ import { TrailingNode } from "@tiptap/extensions/trailing-node";
 import Typography from "@tiptap/extension-typography";
 import { UndoRedo } from "@tiptap/extensions/undo-redo";
 
-import FileHandler from "@tiptap/extension-file-handler";
-
 const lowlight = createLowlight(common);
 
 const RequiredNodes = [Document, Paragraph, Text];
@@ -89,7 +87,6 @@ const Functionalities = [
   FontSizeKit,
   Gapcursor,
   Dropcursor,
-  FileHandler,
   Placeholder,
   TextAlign.configure({ types: ["heading", "paragraph"] }),
   TrailingNode.configure({
