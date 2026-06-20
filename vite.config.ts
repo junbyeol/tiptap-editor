@@ -6,9 +6,17 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+    alias: [
+      { find: "@", replacement: path.resolve(__dirname, "./src") },
+      {
+        find: "@junbyeol/tiptap-editor/style.css",
+        replacement: path.resolve(__dirname, "./dist/style.css"),
+      },
+      {
+        find: /^@junbyeol\/tiptap-editor$/,
+        replacement: path.resolve(__dirname, "./dist/index.mjs"),
+      },
+    ],
   },
   build: {
     outDir: "dist-demo",

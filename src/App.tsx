@@ -1,5 +1,6 @@
 import "./App.css";
-import Tiptap from "./tiptap/index";
+import "@junbyeol/tiptap-editor/style.css";
+import { TiptapEditor } from "@junbyeol/tiptap-editor";
 import { toast, ToastContainer, Bounce } from "react-toastify";
 
 const DEMO_INITIAL_CONTENT = `
@@ -34,7 +35,7 @@ function App() {
       <div className="demo-ui">{/* TODO: 데모 헤더/설명 추가 */}</div>
 
       {/* 에디터는 .demo-ui 밖에 위치 → demo-ui 스타일의 영향을 받지 않음 */}
-      <Tiptap
+      <TiptapEditor
         defaultValue={DEMO_INITIAL_CONTENT}
         onChange={(html) => console.log("[demo] onChange:", html)}
         // uploadFile={uploadFile}
