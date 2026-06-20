@@ -106,7 +106,7 @@ const saveRecentPairs = (pairs: RecentPair[]) => {
 export const ColorTextPopover = forwardRef<
   HTMLButtonElement,
   ColorTextPopoverProps
->(({ editor: providedEditor, ...buttonProps }) => {
+>(({ editor: providedEditor, ...buttonProps }, ref) => {
   const { editor } = useTiptapEditor(providedEditor);
   const [recentPairs, setRecentPairs] = useState<RecentPair[]>(loadRecentPairs);
 
@@ -198,6 +198,7 @@ export const ColorTextPopover = forwardRef<
     <Popover>
       <PopoverTrigger asChild>
         <Button
+          ref={ref}
           data-style="ghost"
           role="button"
           tooltip="글자 색상"

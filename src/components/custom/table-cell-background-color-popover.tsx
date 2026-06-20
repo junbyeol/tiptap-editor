@@ -65,7 +65,7 @@ export const ColoredButtonIcon = ({
 export const TableCellBackgroundColorPopover = forwardRef<
   HTMLButtonElement,
   TableCellBackgroundColorPopoverProps
->(({ editor: providedEditor, ...buttonProps }) => {
+>(({ editor: providedEditor, ...buttonProps }, ref) => {
   const { editor } = useTiptapEditor(providedEditor);
 
   const handleApplyBackgroundColor = useCallback(
@@ -79,7 +79,12 @@ export const TableCellBackgroundColorPopover = forwardRef<
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button data-style="ghost" tooltip="셀 배경색 변경" {...buttonProps}>
+        <Button
+          ref={ref}
+          data-style="ghost"
+          tooltip="셀 배경색 변경"
+          {...buttonProps}
+        >
           <RiPaintFill className="tiptap-button-icon" />
         </Button>
       </PopoverTrigger>
