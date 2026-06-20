@@ -65,11 +65,14 @@ export const UploadableButton = forwardRef<
         if (files.length === 0) return;
 
         const pos = editor.state.selection.anchor;
+        const results: Array<{ file: File; url: string | null }> = [];
+
         for (const file of files) {
-          const url = await resolveFileUrl(file);
-          if (!url) {
-            return;
-          }
+          results.push({ file, url: await resolveFileUrl(file) });
+        }
+
+        for (const { file, url } of [...results].reverse()) {
+          if (!url) continue;
           insertFile(editor, file, url, pos);
         }
 
@@ -105,6 +108,7 @@ export const UploadableButton = forwardRef<
             ref={internalInputRef}
             type="file"
             accept={accept}
+            multiple
             style={{ display: "none" }}
             onChange={handleChange}
           />

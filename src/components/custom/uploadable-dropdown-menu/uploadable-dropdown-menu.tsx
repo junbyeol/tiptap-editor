@@ -73,9 +73,14 @@ export const UploadableDropdownMenu = forwardRef<
         if (files.length === 0) return;
 
         const pos = editor.state.selection.anchor;
+        const results: Array<{ file: File; url: string | null }> = [];
+
         for (const file of files) {
-          const url = await resolveFileUrl(file);
-          if (!url) return;
+          results.push({ file, url: await resolveFileUrl(file) });
+        }
+
+        for (const { file, url } of [...results].reverse()) {
+          if (!url) continue;
           insertFile(editor, file, url, pos);
         }
 
@@ -134,6 +139,7 @@ export const UploadableDropdownMenu = forwardRef<
           ref={imageInputRef}
           type="file"
           accept="image/*"
+          multiple
           style={{ display: "none" }}
           onChange={handleFileChange}
         />
@@ -141,6 +147,7 @@ export const UploadableDropdownMenu = forwardRef<
           ref={fileInputRef}
           type="file"
           accept="*/*"
+          multiple
           style={{ display: "none" }}
           onChange={handleFileChange}
         />
