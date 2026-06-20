@@ -51,6 +51,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       shortcutKeys,
       variant,
       size,
+      type = "button",
       ...props
     },
     ref,
