@@ -1,42 +1,112 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
+.demo-intro {
+  margin-bottom: 2rem;
+  padding: 1.5rem 1.75rem;
+  border-radius: var(--tt-radius-lg);
+  background-color: var(--tt-gray-light-a-100);
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+  .dark & {
+    background-color: var(--tt-gray-dark-a-100);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+.demo-intro h1 {
+  margin: 0 0 0.5rem;
+}
+
+.demo-intro p {
+  margin: 0;
+}
+
+.demo-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  align-items: stretch;
+  gap: 1.5rem;
+  transition: grid-template-columns 0.25s ease;
+}
+
+.demo-layout.demo-layout--source-collapsed {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+@media (max-width: 900px) {
+  .demo-layout,
+  .demo-layout.demo-layout--source-collapsed {
+    grid-template-columns: 1fr;
   }
 }
 
-.card {
-  padding: 2em;
+.demo-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  text-align: left;
 }
 
-.read-the-docs {
-  color: #888;
+.demo-pane--collapsed {
+  width: 2.75rem;
+}
+
+.demo-pane-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.demo-pane-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.demo-source-box {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  max-height: 600px;
+  overflow: auto;
+}
+
+.demo-collapse-toggle {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--tt-gray-light-a-600);
+  border-radius: var(--tt-radius-sm);
+
+  &:hover {
+    background-color: var(--tt-gray-light-a-100);
+  }
+
+  .dark & {
+    color: var(--tt-gray-dark-a-600);
+
+    &:hover {
+      background-color: var(--tt-gray-dark-a-100);
+    }
+  }
+}
+
+.demo-pane--collapsed .demo-collapse-toggle {
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem 0;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.demo-pane-vertical-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }

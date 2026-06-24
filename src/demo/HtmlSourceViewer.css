@@ -1,0 +1,12 @@
+.html-source-line--changed {
+  animation: html-source-flash 1.2s ease-out;
+}
+
+@keyframes html-source-flash {
+  0% {
+    background-color: rgba(255, 196, 0, 0.45);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
