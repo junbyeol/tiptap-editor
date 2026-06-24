@@ -11,7 +11,7 @@ RUN pnpm config set minimum-release-age 0 \
     && pnpm install --frozen-lockfile
 
 COPY . .
-RUN pnpm build
+RUN pnpm build:lib && pnpm build
 
 # 2단계: 실행 스테이지 (Nginx)
 FROM nginx:stable-alpine
