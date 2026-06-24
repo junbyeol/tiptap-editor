@@ -8,6 +8,7 @@ import type { Editor } from "@tiptap/react";
 import { ColorTextPopover } from "@/components/custom/color-text-popover";
 import { TextStyleDropdownMenu } from "@/components/custom/text-style-dropdown-menu";
 import { FontSizeDropdownMenu } from "@/components/custom/font-size-dropdown-menu";
+import { FontFamilyDropdownMenu } from "@/components/custom/font-family-dropdown-menu";
 import { TextAlignButton } from "@/components/tiptap-ui/text-align-button";
 import { MarkButton } from "@/components/tiptap-ui/mark-button";
 import { LinkPopover } from "@/components/tiptap-ui/link-popover";
@@ -85,6 +86,7 @@ export default function Menubar({ editor }: { editor: Editor }) {
           </>
         ) : (
           <>
+            <FontFamilyDropdownMenu editor={editor} portal={false} />
             <FontSizeDropdownMenu editor={editor} portal={false} />
           </>
         )}

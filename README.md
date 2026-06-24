@@ -39,10 +39,11 @@ export default function App() {
 | `minHeight`               | `string`                                  | 콘텐츠 영역 최소 높이 (기본값: `200px`)                                 |
 | `maxHeight`               | `string`                                  | 콘텐츠 영역 최대 높이. 초과 시 내부 스크롤 (기본값: 없음)               |
 | `uploadFile`              | `(file: File) => Promise<string>`         | 파일을 업로드하고 URL을 반환. 미제공 시 base64로 브라우저 메모리에 저장 |
-| `onFileInsert`            | `(file: File) => void`                    | 파일이 에디터에 삽입될 때 호출                                          |
-| `onFileError`             | `(error: Error) => void`                  | 파일 처리 오류 시 호출                                                  |
+| `onUploadStart`           | `(file: File) => void`                    | 파일 업로드 시작 시 호출                                                |
+| `onUploadSuccess`         | `(file: File) => void`                    | 파일 업로드 성공 시 호출                                                |
+| `onUploadError`           | `(error: Error) => void`                  | 파일 업로드 오류 시 호출                                                |
 | `allowNonImageFile`       | `boolean`                                 | 이미지 외 파일(PDF 등) 허용 여부 (기본값: `false`)                      |
-| `FileAttachmentComponent` | `ComponentType<FileAttachmentAttributes>` | 비이미지 파일을 렌더링할 컴포넌트                                       |
+| `FileAttachmentComponent` | `ComponentType<FileAttachmentAttributes>` | 비이미지 파일을 렌더링할 컴포넌트. `allowNonImageFile`이 `true`일 때 유효 |
 
 ### 파일 업로드 예시
 
@@ -62,10 +63,86 @@ export default function App() {
   return (
     <TiptapEditor
       uploadFile={uploadFile}
-      onFileInsert={(file) => console.log("삽입됨:", file.name)}
-      onFileError={(error) => console.error(error)}
+      onUploadStart={(file) => console.log("업로드 시작:", file.name)}
+      onUploadSuccess={(file) => console.log("업로드 완료:", file.name)}
+      onUploadError={(error) => console.error(error)}
       allowNonImageFile
     />
+  );
+}
+```
+
+## 폰트 적용
+
+에디터에서 선택할 수 있는 나눔 폰트 시리즈는 별도로 로드해야 합니다. **에디터 페이지와 Viewer 페이지 모두**에 적용해야 WYSIWYG이 보장됩니다.
+
+이 패키지는 두 가지 방식으로 폰트 로드를 지원합니다.
+
+### 방법 A: React 컴포넌트
+
+`EditorFontStylesheets` 컴포넌트를 `<head>` 안에 렌더링합니다.
+
+**Next.js App Router (`layout.tsx`)**
+
+```tsx
+import { EditorFontStylesheets } from "@junbyeol/tiptap-editor";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html>
+      <head>
+        <EditorFontStylesheets />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+**Next.js Pages Router (`_document.tsx`)**
+
+```tsx
+import { Html, Head, Main, NextScript } from "next/document";
+import { EditorFontStylesheets } from "@junbyeol/tiptap-editor";
+
+export default function Document() {
+  return (
+    <Html>
+      <Head>
+        <EditorFontStylesheets />
+      </Head>
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  );
+}
+```
+
+### 방법 B: 폰트 링크 데이터 직접 사용
+
+`EDITOR_FONT_LINKS`를 직접 사용해 프레임워크에 맞게 삽입합니다.
+
+```tsx
+import { EDITOR_FONT_LINKS } from "@junbyeol/tiptap-editor";
+
+// EDITOR_FONT_LINKS 구조:
+// [{ family: "Nanum Gothic", href: "https://fonts.googleapis.com/..." }, ...]
+
+// 예: React Helmet
+import { Helmet } from "react-helmet";
+
+export default function App() {
+  return (
+    <>
+      <Helmet>
+        {EDITOR_FONT_LINKS.map((font) => (
+          <link key={font.family} rel="stylesheet" href={font.href} />
+        ))}
+      </Helmet>
+      {/* ... */}
+    </>
   );
 }
 ```

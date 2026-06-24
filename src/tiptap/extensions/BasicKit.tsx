@@ -33,6 +33,7 @@ import Youtube from "@tiptap/extension-youtube";
 
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import { FontSizeKit } from "./FontSizeKit";
+import { FontFamilyKit } from "./FontFamilyKit";
 import { Dropcursor } from "@tiptap/extension-dropcursor";
 import { Gapcursor } from "@tiptap/extension-gapcursor";
 import { Placeholder } from "@tiptap/extensions/placeholder";
@@ -83,8 +84,9 @@ const Marks = [
 
 const Functionalities = [
   ListKit,
-  TextStyleKit.configure({ fontSize: false }),
+  TextStyleKit.configure({ fontSize: false, fontFamily: false }),
   FontSizeKit,
+  FontFamilyKit,
   Gapcursor,
   Dropcursor,
   Placeholder,

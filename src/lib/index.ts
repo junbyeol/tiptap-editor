@@ -13,3 +13,9 @@ export {
   FileAttachmentNode,
 } from "@/tiptap/extensions/FileAttachment";
 export { DefaultFileAttachmentComponent } from "@/tiptap/extensions/DefaultFileAttachmentComponent";
+
+export {
+  EDITOR_FONTS,
+  EDITOR_FONT_LINKS,
+  EditorFontStylesheets,
+} from "./fonts";
