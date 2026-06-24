@@ -72,6 +72,26 @@ export default function App() {
 }
 ```
 
+## 콘텐츠 렌더링 (읽기 전용)
+
+저장된 HTML을 읽기 전용으로 표시할 때는 `TiptapContent`를 사용합니다. 에디터 없이 콘텐츠 스타일만 적용된 뷰어 역할을 합니다.
+
+```tsx
+import { TiptapContent } from "@junbyeol/tiptap-editor";
+import "@junbyeol/tiptap-editor/style.css";
+
+export default function PostPage({ post }) {
+  return <TiptapContent html={post.content} />;
+}
+```
+
+### Props
+
+| Prop        | 타입     | 설명                                          |
+| ----------- | -------- | --------------------------------------------- |
+| `html`      | `string` | 렌더링할 HTML 문자열 (필수)                   |
+| `className` | `string` | 루트 `div`에 추가할 CSS 클래스 (선택)         |
+
 ## 폰트 적용
 
 에디터에서 선택할 수 있는 나눔 폰트 시리즈는 별도로 로드해야 합니다. **에디터 페이지와 Viewer 페이지 모두**에 적용해야 WYSIWYG이 보장됩니다.

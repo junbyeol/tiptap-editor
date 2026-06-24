@@ -7,6 +7,9 @@ import "@/styles/_editor.css";
 export { default as TiptapEditor } from "@/tiptap/index";
 export type { TiptapProps } from "@/tiptap/index";
 
+export { default as TiptapContent } from "@/tiptap/content";
+export type { TiptapContentProps } from "@/tiptap/content";
+
 export type { FileAttachmentAttributes } from "@/tiptap/extensions/FileAttachment";
 export {
   FileAttachment,
