@@ -78,6 +78,10 @@
     font-size: 1.125rem;
   }
 
+  p:empty {
+    min-height: 1lh;
+  }
+
   /* Code and preformatted text styles */
   code {
     background-color: var(--purple-light);
@@ -237,6 +241,25 @@
   /* Figure & Figcaption */
   figure {
     margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+
+    /*
+     * 정렬: 에디터에서는 이미지가 div[data-resize-container]로 감싸지지만
+     * 읽기 전용 HTML에는 img가 figure의 직접 자식으로 직렬화되므로,
+     * 자식 래퍼를 직접 지정하지 않고 figure 자체의 align-items로 정렬한다.
+     */
+    &[data-align="left"] {
+      align-items: flex-start;
+    }
+
+    &[data-align="right"] {
+      align-items: flex-end;
+    }
+
+    &[data-align="center"] {
+      align-items: center;
+    }
 
     /*
      * 다중 이미지 그리드 레이아웃 (data-count >= 2)
@@ -245,6 +268,7 @@
      */
     &[data-count]:not([data-count="1"]) {
       display: grid;
+      align-items: stretch;
       grid-template-columns: repeat(6, 1fr);
       gap: 4px;
       float: none;
@@ -352,6 +376,7 @@
   }
 
   figcaption {
+    align-self: stretch;
     text-align: center;
     font-size: 0.875rem;
     color: var(--tt-gray-light-a-600);
@@ -427,31 +452,6 @@
 
 /* === 에디터 전용 스타일 === */
 .tiptap-editor {
-  p:empty {
-    min-height: 1lh;
-  }
-
-  /*
-   * ResizableNodeView: figure > div[data-resize-container](display:flex)
-   *                             > div[data-resize-wrapper](display:block)
-   *                               > img
-   * figure는 항상 에디터 너비 전체를 차지하며,
-   * 정렬은 flex 컨테이너의 justify-content로 처리.
-   */
-  figure {
-    &[data-align="left"] > div[data-resize-container] {
-      justify-content: flex-start;
-    }
-
-    &[data-align="right"] > div[data-resize-container] {
-      justify-content: flex-end;
-    }
-
-    &[data-align="center"] > div[data-resize-container] {
-      justify-content: center;
-    }
-  }
-
   &.resize-cursor {
     cursor: ew-resize;
     cursor: col-resize;

@@ -4,6 +4,14 @@ import { TextSelection } from "@tiptap/pm/state";
 
 export type FigureAlign = "left" | "center" | "right";
 
+function countImages(node: PMNode): number {
+  let count = 0;
+  node.forEach((child) => {
+    if (child.type.name === "image") count++;
+  });
+  return count;
+}
+
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     figure: {
@@ -39,8 +47,14 @@ export const FigureKit = Node.create({
     return [{ tag: "figure" }];
   },
 
-  renderHTML({ HTMLAttributes }) {
-    return ["figure", mergeAttributes(HTMLAttributes), 0];
+  renderHTML({ node, HTMLAttributes }) {
+    return [
+      "figure",
+      mergeAttributes(HTMLAttributes, {
+        "data-count": String(countImages(node)),
+      }),
+      0,
+    ];
   },
 
   addNodeView() {
@@ -49,11 +63,7 @@ export const FigureKit = Node.create({
 
       const sync = (n: PMNode) => {
         dom.setAttribute("data-align", n.attrs.align as string);
-        let count = 0;
-        n.forEach((child) => {
-          if (child.type.name === "image") count++;
-        });
-        dom.dataset.count = String(count);
+        dom.dataset.count = String(countImages(n));
       };
 
       sync(node);
