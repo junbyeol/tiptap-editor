@@ -171,11 +171,31 @@ export default function App() {
 
 ```bash
 # 의존성 설치
-yarn
+pnpm install
 
-# 데모 앱 실행
-yarn dev
+# 데모 앱 실행 (localhost:5173)
+pnpm dev
 
 # 라이브러리 빌드
-yarn build:lib
+pnpm build:lib
 ```
+
+데모 앱(`src/App.tsx`, `src/demo/*`)은 에디터 소스코드를 직접 import하지 않고, 빌드된
+`dist/index.mjs`, `dist/style.css`를 alias로 사용합니다 ([vite.config.ts](./vite.config.ts) 참고).
+따라서 수정하는 파일 위치에 따라 반영 방식이 다릅니다.
+
+- `src/App.tsx`, `src/demo/*` 등 **데모 전용 코드**: `pnpm dev`만 켜놓으면 HMR로 즉시 반영됩니다.
+- `src/tiptap/*`, `src/components/*`, `src/styles/*`, `src/lib/*` 등 **에디터 라이브러리 소스**:
+  `dist/`를 다시 빌드해야 데모에 반영됩니다. 라이브러리를 수정하면서 데모로 바로 확인하려면
+  터미널 두 개로 다음을 함께 띄워두세요.
+
+  ```bash
+  # 터미널 1: 라이브러리 소스 변경을 감지해 자동 재빌드
+  pnpm build:lib --watch
+
+  # 터미널 2: 데모 서버
+  pnpm dev
+  ```
+
+  빌드 산출물을 alias로 물고 있어 HMR까지는 안 되므로, 재빌드 후 브라우저 새로고침이 필요할 수
+  있습니다.
