@@ -39,10 +39,43 @@ export const FileAttachmentNode = Node.create<FileAttachmentOptions>({
     return [{ tag: 'div[data-type="file-attachment"]' }];
   },
 
-  renderHTML({ HTMLAttributes }) {
+  renderHTML({ node, HTMLAttributes }) {
+    const { name, url } = node.attrs as FileAttachmentAttributes;
+
+    // DefaultFileAttachmentComponent(NodeView)가 그리는 것과 동일한 정적
+    // 마크업을 직렬화해야 한다 — NodeView는 저장 시점(getHTML)에는 실행되지
+    // 않으므로, 여기서 직접 앵커/아이콘/파일명을 넣지 않으면 저장된 HTML은
+    // 빈 div가 되어 게시글에서 첨부파일이 통째로 사라진다.
     return [
       "div",
       mergeAttributes(HTMLAttributes, { "data-type": "file-attachment" }),
+      [
+        "a",
+        {
+          href: url,
+          download: name,
+          class: "file-attachment",
+          tabindex: "0",
+          "aria-label": `${name} 다운로드`,
+        },
+        [
+          "http://www.w3.org/2000/svg svg",
+          {
+            width: "18",
+            height: "18",
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            "stroke-width": "2.5",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            class: "file-attachment__icon",
+            "aria-hidden": "true",
+          },
+          ["path", { d: "M12 5v14M5 12l7 7 7-7" }],
+        ],
+        ["span", { class: "file-attachment__name" }, name],
+      ],
     ];
   },
 
