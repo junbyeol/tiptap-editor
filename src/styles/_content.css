@@ -417,6 +417,21 @@
     }
   }
 
+  /*
+   * renderWrapper: true로 직렬화된 <div class="tableWrapper"><table>...</table></div>
+   * 구조를 위한 공용 스타일. 에디터 전용 padding/hover 효과는 _editor.css에 있다.
+   */
+  .tableWrapper {
+    position: relative;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+  }
+
+  /* renderWrapper 도입 이전에 저장된 표(wrapper 없이 table이 .tiptap의 직계 자식)를 위한 폴백 */
+  > table {
+    margin: 1.5rem 0;
+  }
+
   /* File attachment node */
   .file-attachment {
     display: inline-flex;

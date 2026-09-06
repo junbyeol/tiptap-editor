@@ -39,6 +39,7 @@ export const TableKit = Extension.create({
       Table.configure({
         resizable: true,
         View: GripTableView,
+        renderWrapper: true,
       }),
       ExtendedTableCell,
       TableHeader,
