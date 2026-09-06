@@ -1,0 +1,72 @@
+.json-tree {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.json-tree-empty {
+  color: var(--tt-gray-light-a-500);
+  font-size: 0.875rem;
+}
+
+.json-tree-node > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.json-tree-node > summary::-webkit-details-marker {
+  display: none;
+}
+
+.json-tree-node > summary::before {
+  content: "▸";
+  display: inline-block;
+  width: 1em;
+  color: var(--tt-gray-light-a-500);
+}
+
+.json-tree-node[open] > summary::before {
+  content: "▾";
+}
+
+.json-tree-children {
+  margin-left: 1.25rem;
+  border-left: 1px solid var(--tt-gray-light-a-200);
+  padding-left: 0.5rem;
+}
+
+.json-tree-type {
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+.json-tree-attr {
+  margin-left: 0.5rem;
+  color: #b45309;
+}
+
+.json-tree-value {
+  color: #059669;
+}
+
+.json-tree-text {
+  margin-left: 1.25rem;
+  color: var(--tt-gray-light-a-700);
+}
+
+.json-tree-text-quote {
+  color: #059669;
+}
+
+.json-tree-marks {
+  margin-left: 0.5rem;
+  color: #7c3aed;
+}
+
+.dark .json-tree-children {
+  border-left-color: var(--tt-gray-dark-a-200);
+}
+
+.dark .json-tree-text {
+  color: var(--tt-gray-dark-a-700);
+}

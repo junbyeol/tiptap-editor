@@ -1,9 +1,17 @@
 .tiptap-wrapper {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .tiptap-editor {
+  /*
+   * flex: 1로 두면 부모(.tiptap-wrapper)가 정해진 높이를 가질 때 툴바(MenuBar)를
+   * 제외한 남은 공간을 자동으로 채운다. maxHeight를 명시적으로 주는 기존
+   * 사용법과도 호환된다(플렉스 아이템도 max-height로 캡이 걸림).
+   */
+  flex: 1 1 auto;
   min-height: var(--tiptap-min-height, 200px);
   max-height: var(--tiptap-max-height, none);
   overflow-y: auto;

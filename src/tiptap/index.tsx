@@ -1,4 +1,5 @@
 import { useEditor, EditorContent } from "@tiptap/react";
+import type { Editor } from "@tiptap/core";
 import { TiptapEditorContext } from "@/contexts/TiptapEditorContext";
 import MenuBar from "./menubar";
 import { useMemo, useRef, useEffect } from "react";
@@ -60,6 +61,12 @@ export interface TiptapProps {
    * allowNonImageFile이 true일 때 유효하며, name/mimeType/url/size를 props로 받는다.
    */
   FileAttachmentComponent?: ComponentType<FileAttachmentAttributes>;
+  /**
+   * 에디터 인스턴스가 생성된 직후 1회 호출되는 콜백.
+   * 데모/디버깅 목적으로 live 에디터(editor.getJSON(), editor.view.dom 등)에
+   * 접근해야 할 때 사용한다.
+   */
+  onEditorCreate?: (editor: Editor) => void;
 }
 
 const TiptapEditor = ({
@@ -73,6 +80,7 @@ const TiptapEditor = ({
   onUploadError,
   allowNonImageFile,
   FileAttachmentComponent,
+  onEditorCreate,
 }: TiptapProps) => {
   const {
     handleDrop,
@@ -114,6 +122,9 @@ const TiptapEditor = ({
       }),
     ],
     content: defaultValue,
+    onCreate: ({ editor: currentEditor }) => {
+      onEditorCreate?.(currentEditor);
+    },
     onUpdate: ({ editor: currentEditor }) => {
       onChangeRef.current?.(currentEditor.getHTML());
     },

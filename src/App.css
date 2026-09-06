@@ -1,112 +1,153 @@
 #root {
-  margin: 0 auto;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Main / Inspector 2단 구조.
+ * - Main: 지금 작업/결과(Editor 또는 Article Renderer)를 크게 보여준다.
+ * - Inspector: 내부 상태(ProseMirror JSON / Editor DOM / Article HTML) 중
+ *   하나를 선택해서 크게 보여준다.
+ * 두 영역의 선택 상태는 서로 독립적이다 (예: Main=Editor + Inspector=Editor DOM).
+ */
+.demo-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.demo-main,
+.demo-inspector {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  /* Main 내용이 계산상 넘치더라도 Inspector 쪽으로 새어 보이지 않게 각 영역을 확실히 클리핑 */
+  overflow: hidden;
+}
+
+.demo-main {
+  border-bottom: 1px solid var(--tt-gray-light-a-200);
+}
+
+.dark .demo-main {
+  border-bottom-color: var(--tt-gray-dark-a-200);
+}
+
+.demo-inspector {
+  /*
+   * 불투명 배경: Main 콘텐츠가 길어져도 절대 비쳐 보이지 않도록.
+   * -a- 접미사가 붙은 알파 토큰은 그 자체로 반투명이라 여기선 완전 불투명한
+   * solid 토큰(alpha:1)을 쓴다.
+   */
+  background-color: var(--tt-gray-light-50);
+}
+
+.dark .demo-inspector {
+  background-color: var(--tt-gray-dark-50);
+}
+
+/* Main/Inspector 사이의 드래그 가능한 구분선 */
+.demo-divider {
+  flex: none;
+  height: 6px;
+  cursor: row-resize;
+  background-color: var(--tt-gray-light-a-100);
+  position: relative;
+}
+
+.demo-divider:hover,
+.demo-divider:active {
+  background-color: var(--tt-brand-color-300, var(--tt-gray-light-a-300));
+}
+
+.dark .demo-divider {
+  background-color: var(--tt-gray-dark-a-100);
+}
+
+.dark .demo-divider:hover,
+.dark .demo-divider:active {
+  background-color: var(--tt-brand-color-700, var(--tt-gray-dark-a-300));
+}
+
+/* 뷰 전환 탭 (Main: Editor/Article, Inspector: JSON/Editor DOM/Article HTML) */
+.demo-view-switch {
+  flex-shrink: 0;
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--tt-gray-light-a-200);
+}
+
+.dark .demo-view-switch {
+  border-bottom-color: var(--tt-gray-dark-a-200);
+}
+
+.demo-view-switch button {
+  all: unset;
+  cursor: pointer;
+  padding: 0.375rem 0.875rem;
+  border-radius: var(--tt-radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--tt-gray-light-a-600);
+}
+
+.demo-view-switch button:hover {
+  background-color: var(--tt-gray-light-a-100);
+}
+
+.demo-view-switch button[aria-selected="true"] {
+  background-color: var(--tt-gray-light-a-200);
+  color: var(--tt-gray-light-a-900);
+}
+
+.demo-view-switch button:focus-visible {
+  outline: 2px solid var(--tt-brand-color-500);
+  outline-offset: 2px;
+}
+
+.dark .demo-view-switch button {
+  color: var(--tt-gray-dark-a-600);
+}
+
+.dark .demo-view-switch button:hover {
+  background-color: var(--tt-gray-dark-a-100);
+}
+
+.dark .demo-view-switch button[aria-selected="true"] {
+  background-color: var(--tt-gray-dark-a-200);
+  color: var(--tt-gray-dark-a-900);
+}
+
+/* Main content 영역 */
+.demo-main-content {
+  flex: 1;
+  min-height: 0;
+  padding: 1rem;
+}
+
+.demo-main-editor {
+  height: 100%;
+  min-height: 0;
+}
+
+.demo-main-article {
+  height: 100%;
+  overflow: auto;
   padding: 2rem;
 }
 
-.demo-intro {
-  margin-bottom: 2rem;
-  padding: 1.5rem 1.75rem;
-  border-radius: var(--tt-radius-lg);
-  background-color: var(--tt-gray-light-a-100);
-
-  .dark & {
-    background-color: var(--tt-gray-dark-a-100);
-  }
-}
-
-.demo-intro h1 {
-  margin: 0 0 0.5rem;
-}
-
-.demo-intro p {
-  margin: 0;
-}
-
-.demo-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-  align-items: stretch;
-  gap: 1.5rem;
-  transition: grid-template-columns 0.25s ease;
-}
-
-.demo-layout.demo-layout--source-collapsed {
-  grid-template-columns: minmax(0, 1fr) auto;
-}
-
-@media (max-width: 900px) {
-  .demo-layout,
-  .demo-layout.demo-layout--source-collapsed {
-    grid-template-columns: 1fr;
-  }
-}
-
-.demo-pane {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  min-width: 0;
-  text-align: left;
-}
-
-.demo-pane--collapsed {
-  width: 2.75rem;
-}
-
-.demo-pane-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.demo-pane-title {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.demo-source-box {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  max-height: 600px;
-  overflow: auto;
-}
-
-.demo-collapse-toggle {
-  all: unset;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--tt-gray-light-a-600);
-  border-radius: var(--tt-radius-sm);
-
-  &:hover {
-    background-color: var(--tt-gray-light-a-100);
-  }
-
-  .dark & {
-    color: var(--tt-gray-dark-a-600);
-
-    &:hover {
-      background-color: var(--tt-gray-dark-a-100);
-    }
-  }
-}
-
-.demo-pane--collapsed .demo-collapse-toggle {
+/* Inspector content 영역 */
+.demo-inspector-content {
   flex: 1;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.75rem 0;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  min-height: 0;
+  overflow: auto;
+  padding: 1rem;
 }
 
-.demo-pane-vertical-label {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+@media (max-width: 700px) {
+  .demo-main-article {
+    padding: 1.25rem;
+  }
 }
